@@ -23,7 +23,7 @@ io.on('connection', (socket) => {
             console.log(msg);
         });
         console.log("emitted: [", data.channel_1, data.channel_2, data.channel_3, data.channel_4, "]");
-    }, 100);
+    }, 1);
     console.log("Connected");
 });
 
