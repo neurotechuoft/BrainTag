@@ -20,9 +20,11 @@ To start working on BrainTag, developers should...
 
 ## Setting Up
 1. Clone the repo locally 
+    > cd BrainTag/brain-tag/
 2. Install dependencies 
     > npm install 
 3. Run app
     > npm start
 4. In a new terminal, run electron
+    > cd BrainTag/brain-tag/
     > npm run electron
