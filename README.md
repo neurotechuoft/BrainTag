@@ -26,5 +26,4 @@ To start working on BrainTag, developers should...
 3. Run app
     > npm start
 4. In a new terminal, run electron
-    > cd BrainTag/brain-tag/
     > npm run electron
