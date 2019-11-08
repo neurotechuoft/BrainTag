@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import CanvasJSReact from './assets/canvasjs.react';
+import CanvasJSReact from '../assets/canvasjs.react';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 var dps = []; // data points for graph
@@ -33,14 +33,15 @@ class DynamicLineChart extends Component {
 		// sets initialTime for the first data point
 		if (this.initialTime === 0) this.initialTime = new Date().getTime() / 1000;
 
-		let seconds = new Date().getTime() / 1000;
+		// let seconds = new Date().getTime() / 1000;
 		
-		dps.push({x: seconds - this.initialTime, y: parseFloat(data[this.props.channel])});
+		dps.push({x: data["time"] - this.initialTime, y: parseFloat(data[this.props.channel])});
 
 		// since we want to show last x seconds and streaming rate is 1000Hz,
         // the last x seconds have x * 1000 data points
 		if (dps.length > this.props.secondsToShow * 1000 ) {
 			dps.shift();
+			console.log(dps);
 		}
     }
 
@@ -52,7 +53,13 @@ class DynamicLineChart extends Component {
 			data: [{
 				type: "line",
 				dataPoints : dps
-			}]
+			}],
+			axisY: {
+				title: "Magnitude"
+			},
+			axisX: {
+				title: "Time"
+			}
 		}
 		
 		return (
