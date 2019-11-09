@@ -16,26 +16,8 @@ function App() {
 				socket={socket} 
 				secondsToShow={1} 
 				refreshRate={60}
-				channel={"channel_1"} 
+				channel={"channel_1"}
 			/>
-			{/* <DynamicLineGraph 
-				socket={socket} 
-				secondsToShow={0.5} 
-				refreshRate={60}
-				channel={"channel_2"} 
-			/>
-			<DynamicLineGraph 
-				socket={socket} 
-				secondsToShow={0.5} 
-				refreshRate={60}
-				channel={"channel_3"} 
-			/>
-			<DynamicLineGraph 
-				socket={socket} 
-				secondsToShow={0.5} 
-				refreshRate={60}
-				channel={"channel_4"} 
-			/> */}
 		</div>
 	);
 }
