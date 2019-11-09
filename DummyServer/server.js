@@ -6,7 +6,7 @@ const MULT = 50;
 io.on('connection', (socket) => {
     // Precondition: func must be a function that returns a number
     function getRandNumStr(func){
-        return (func(i + Math.random()) * MULT).toString();
+        return (func(Math.random()) * MULT).toString();
     }
 
     setInterval(() => {
@@ -15,7 +15,8 @@ io.on('connection', (socket) => {
             "channel_1": getRandNumStr(Math.sin),
             "channel_2": getRandNumStr(Math.cos),
             "channel_3": getRandNumStr((i) => {return Math.sin(i) * -0.1}),
-            "channel_4": getRandNumStr((i) => {return Math.cos(i) * -0.5})
+            "channel_4": getRandNumStr((i) => {return Math.cos(i) * -0.5}),
+            "time": new Date().getTime() / 1000
         };
         socket.emit("data", data, (err, msg) => {
             // Callback
