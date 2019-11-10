@@ -41,7 +41,6 @@ class DynamicLineChart extends Component {
         // the last x seconds have x * 1000 data points
 		if (dps.length > this.props.secondsToShow * 1000 ) {
 			dps.shift();
-			console.log(dps);
 		}
     }
 
