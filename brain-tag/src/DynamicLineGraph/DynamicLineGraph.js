@@ -46,9 +46,6 @@ class DynamicLineChart extends Component {
 
 	render() {
 		const options = {
-			title :{
-				text: this.props.channel
-			},
 			data: [{
 				type: "line",
 				dataPoints : dps

@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import io from 'socket.io-client';
-import DynamicLineGraph from '../DynamicLineGraph/DynamicLineGraph';
+import ChannelContainer from '../PowerGraph/ChannelContainer'
 
 function App() {
 
@@ -12,12 +12,10 @@ function App() {
 
 	return (
 		<div className="App">
-			<DynamicLineGraph 
-				socket={socket} 
-				secondsToShow={1} 
-				refreshRate={60}
-				channel={"channel_1"}
-			/>
+			<p className="header" > Chart View </p>
+      		<div className="Charts">
+			<ChannelContainer className="chart" sampleRate='1000' intervalSize ='1000' socket={socket}  />
+			</div>
 		</div>
 	);
 }
