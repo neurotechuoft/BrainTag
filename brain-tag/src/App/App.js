@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import io from 'socket.io-client';
 import DynamicLineGraph from '../DynamicLineGraph/DynamicLineGraph';
+import BottomButton from '../Buttons/BottomButton';
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
 				refreshRate={60}
 				channel={"channel_1"}
 			/>
+			<BottomButton></BottomButton>
 		</div>
 	);
 }
