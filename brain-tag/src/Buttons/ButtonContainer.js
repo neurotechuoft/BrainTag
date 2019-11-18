@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import Toggle from './ToggleButton';
-import './BottomButton.css';
-class BottomButton extends Component{
-	
-	
-	
+import './ButtonContainer.css';
+class ButtonContainer extends Component{
 	render() {
-		
 		return (
 		<div>
 			<div>
@@ -20,4 +16,4 @@ class BottomButton extends Component{
 		);
 	}
 }
-export default BottomButton;
+export default ButtonContainer;
