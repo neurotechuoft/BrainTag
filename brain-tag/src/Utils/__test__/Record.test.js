@@ -1,4 +1,4 @@
-import {getDataPointJSON, getDataPointJSONForChannels} from './Record';
+import {getDataPointJSON, getDataPointJSONForChannels} from '../Record';
 
 /* TESTS */
 
