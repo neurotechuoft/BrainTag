@@ -1,0 +1,34 @@
+.Channel {
+    height: 5vh;
+}
+
+.container {
+    flex-direction: column;
+    width: 100%;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 20%;
+    text-align: center;
+    margin: 0 auto;
+    align-items: center;
+    font-size: 2em;
+}
+
+
+.column {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    flex: auto;
+  }
+
+.channelTitle {
+    display: flex;
+    flex-direction: column;
+    width: 15%;
+}

@@ -1,0 +1,15 @@
+.App {
+    text-align: center;
+  
+  }
+  
+  .Charts {
+    background-color: white;;
+    font-size: 10px;
+    color: #282c34;
+  }
+  
+  .header {
+    font-size: calc(10px + 2vmin);
+  }
+  
