@@ -3,7 +3,7 @@ const fs = require('fs');
 
 // Files will be created in the data directory
 
-const MAX_SIZE = 1; // Sets the max file size to 1 kb
+const MAX_SIZE = 1; // Sets the max file size to approx 1 MB
 const FILE_WRITE_DELAY = 1000; // Writes to file ever 1 second
 const DISCONNECT_DELAY = 3*FILE_WRITE_DELAY;
 
@@ -48,5 +48,5 @@ function getFileSizeKiloBytes(fileName){
     var stats = fs.statSync("data/"+fileName);
     var fileSizeKiloBytes = stats['size'];
     fileSizeKiloBytes = fileSizeKiloBytes / 1000000
-    return fileSizeBytes;
+    return fileSizeKiloBytes;
 }
