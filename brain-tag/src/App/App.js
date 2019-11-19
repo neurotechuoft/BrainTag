@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.css';
 import io from 'socket.io-client';
-import ChannelContainer from '../PowerGraph/ChannelContainer'
+import ChannelContainer from '../PowerGraph/ChannelContainer';
+import ButtonContainer from '../Buttons/ButtonContainer';
 
 function App() {
 
@@ -14,8 +15,9 @@ function App() {
 		<div className="App">
 			<p className="header" > Chart View </p>
       		<div className="Charts">
-			<ChannelContainer className="chart" sampleRate='1000' intervalSize ='1000' socket={socket}  />
+				<ChannelContainer className="chart" sampleRate='1000' intervalSize ='1000' socket={socket}  />
 			</div>
+			<ButtonContainer/>
 		</div>
 	);
 }
