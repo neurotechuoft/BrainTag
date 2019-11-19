@@ -1,53 +1,52 @@
 const io = require('socket.io')(8009) // FileServer will be run on http://localhost:8009
 const fs = require('fs');
 
+// Files will be created in the data directory
+
+const MAX_SIZE = 1; // Sets the max file size to 1 kb
+const FILE_WRITE_DELAY = 1000; // Writes to file ever 1 second
+const DISCONNECT_DELAY = 3*FILE_WRITE_DELAY;
 
 io.on('connection', (socket) => {
     // Create an object that will continuously push data to a table
     var obj = {
-        table: []
-    }
+        table: [null]
+    };
+    let files = [];
     
     // Adds the data to the array in obj
     socket.on('JSONData', data => {
-        console.log('recieved');
         obj.table.push(data);
     });
 
-    // On disconnect, create a file with the contents in the array
-    socket.on('disconnect', () => {
-        // Name of the file that will be created
-        var name = "data-"+Date.now()+'.json';
+    // On disconnect, log which files have been created.
+    socket.on('disconnect', () => {setTimeout(() => {
+        console.log("Data saved to: " , files);
+    }), DISCONNECT_DELAY});
 
-        // Converts obj to readable JSON
-        var jsonData = JSON.stringify(obj);
-
-        // Writes a file with the JSON data
-        fs.writeFile(name, jsonData + '\r\n', 'utf-8', function(err) {
-            if(err) console.log('error', err);
-        });
-
-        // Clears any data in the array
-        obj.table = [];
-
-        // Output the size of the file after 5 seconds
-        setTimeout(function () {
-            fs.stat(name, function(err, stat) {
-                if(err == null) {
-                    console.log(getFileSizeBytes(name));
-                }
+    
+    setInterval(function () {
+        // If new data, add it to a file
+        if (obj.table.length > 0) {
+            if (files.length === 0 || getFileSizeKiloBytes(files[files.length-1]) >= MAX_SIZE) {
+                files.push("data-"+Date.now()+".json")
+                // Clear the obj array on creation of new file, in order to avoid dupicate data.
+                obj.table.length = 0;
+            }
+            let fileName = files[files.length-1];
+            var jsonData = JSON.stringify(obj);
+            fs.writeFile("data/"+fileName, jsonData + '\r\n', 'utf-8', function(err) {
+                if(err) console.log('error', err);
             });
-        }, 5000)
-        
-    });
-
-
+        }
+    }, FILE_WRITE_DELAY);
 });
 
+
 // Function to get the file size in bytes
-function getFileSizeBytes(file){
-    var stats = fs.statSync(file);
-    var fileSizeBytes = stats['size'];
-    fileSizeBytes = fileSizeBytes / 1000000
+function getFileSizeKiloBytes(fileName){
+    var stats = fs.statSync("data/"+fileName);
+    var fileSizeKiloBytes = stats['size'];
+    fileSizeKiloBytes = fileSizeKiloBytes / 1000000
     return fileSizeBytes;
 }

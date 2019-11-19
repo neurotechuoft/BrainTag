@@ -14,6 +14,7 @@ socket.on("connect", () => {
 setInterval(() => {
     var data = {
         //add timestamp
+        timestamp: Date.now(),
         channels:{
         "channel_1": Math.floor(Math.random()*100),
         "channel_2": Math.floor(Math.random()*100),
