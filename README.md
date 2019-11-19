@@ -6,10 +6,8 @@ To start working on BrainTag, developers should...
 1. Clone the repo locally 
     > git clone https://github.com/neurotechuoft/BrainTag.git
     
-    > cd BrainTag/
-2. Create a new branch for the feature they are working on (based off of development branch).
-    > git checkout development
-    
+    > cd brain-tag/
+2. Create a new branch for the feature they are working on (based off of development branch).  
     > git checkout -b new-feature
 3. Develop the new feature in the working directory
 4. Add/Commit code with descriptive message
@@ -20,6 +18,7 @@ To start working on BrainTag, developers should...
 
 ## Setting Up
 1. Clone the repo locally 
+    > cd BrainTag/brain-tag/
 2. Install dependencies 
     > npm install 
 3. Run server and electron simultaneously (if this fails, continue to step 4)
