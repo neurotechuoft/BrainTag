@@ -1,0 +1,4 @@
+# Include this directoory
+!/
+# Ignore generated data files
+/*.json
