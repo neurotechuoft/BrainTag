@@ -17,7 +17,7 @@ function App() {
       		<div className="Charts">
 				<ChannelContainer className="chart" sampleRate='1000' intervalSize ='1000' socket={socket}  />
 			</div>
-			<ButtonContainer/>
+			<ButtonContainer socket={socket}/>
 		</div>
 	);
 }
