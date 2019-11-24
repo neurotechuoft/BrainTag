@@ -1,18 +1,28 @@
-import React, { Component } from 'react';
-import Toggle from './ToggleButton';
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Button from 'react-bootstrap/Button';
 import './ButtonContainer.css';
-class ButtonContainer extends Component{
+
+class ButtonContainer extends React.Component{
+	constructor(props) {
+		super(props);
+
+		this.socket = this.props.socket;
+	}
+
+	handleClick(e) {
+		console.log(e.target)
+	}
+
 	render() {
 		return (
-		<div>
 			<div>
-				<Toggle text= "&#11044;" bg="#F74F56" ></Toggle>
-				<Toggle text={"Up"}bg = '#5EBA7D' ></Toggle>
-				<Toggle text={"Down"}bg = '#5EBA7D' >DOWN</Toggle>
-				<Toggle text={"LEFT"}bg = '#5EBA7D' >LEFT</Toggle>
-				<Toggle text={"RIGHT"}bg = '#5EBA7D' ></Toggle>
+				<Button className="ml-3" onClick={this.handleClick}>&#11044;</Button>
+				<Button className="ml-3" onClick={this.handleClick}>Up</Button>
+				<Button className="ml-3" onClick={this.handleClick}>Down</Button>
+				<Button className="ml-3" onClick={this.handleClick}>Left</Button>
+				<Button className="ml-3" onClick={this.handleClick}>Right</Button>
 			</div>
-		</div>
 		);
 	}
 }
