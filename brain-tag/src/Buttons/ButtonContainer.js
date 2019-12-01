@@ -2,7 +2,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from 'react-bootstrap';
 import './ButtonContainer.css';
-import getDataPointJson from '../Utils/Record';
+import {getDataPointJSON} from '../Utils/Record';
 
 // Should import all the tag strings from another file but for now they will be determined in this file
 
@@ -17,18 +17,46 @@ let tags = [UP, DOWN, LEFT, RIGHT];
 
 class ButtonContainer extends React.Component{
 	state = {
-		assignedTags: []
+		channels: {
+			channel_1: undefined,
+			channel_2: undefined,
+			channel_3: undefined,
+			channel_4: undefined
+		},
+		assignedTags: [],
+		recording: false
 	};
 	constructor(props) {
 		super(props);
 		this.socket = this.props.socket;
+		this.file_socket = this.props.file_socket;
 		this.handleClick = this.handleClick.bind(this);
+		this.getChannelData = this.getChannelData.bind(this);
+		this.interval = null;
+	}
+
+	componentDidMount(){
+		this.getChannelData();
+	}
+
+	getChannelData() {
+		if(this.socket){
+			console.log("here")
+			this.socket.on("data", data => {
+				this.setState({
+					channels: {
+						channel_1: data.channel_1,
+						channel_2: data.channel_2,
+						channel_3: data.channel_3,
+						channel_4: data.channel_4
+					}
+				})
+			})
+		}
 	}
 
 	handleClick(e) {
-		var data = {
-
-		};
+		
 		// If tag already in assignedTags, remove it (toggle off)
 		if (this.state.assignedTags.includes(e.target.id)){
 			var newTags = [...this.state.assignedTags];
@@ -40,25 +68,40 @@ class ButtonContainer extends React.Component{
 		}
 		// If tag not in assignedTags, add it (toggle on)
 		else if (e.target.id !== RECORD){
+			console.log('here');
 			this.setState({
 				assignedTags: [...this.state.assignedTags, e.target.id]
-			})
+			});
 		}
 		// If Record, start connection to socket.
-		// else{
-		//  	const socket = io("http://localhost:8009", {
-		//  			"timeout": 10000,
-		//  			"transports": [WebSocket]
-		//  		});
-		//  		socket.on("connect", () => {
-		//  			console.log("connected");
-		//  		});
-		//  		socket.emit("JSONData", data, err => {
-		//  			if (err){
-		//  				console.log(err);
-		//  			}
-		//  		});	
-		// }
+		else{
+			// If already recording, stop
+			if (this.state.recording){
+				clearInterval(this.interval);
+				this.setState({
+					recording: false
+				})
+			}
+			else{
+				this.setState({
+					recording: true
+				});
+				var data = {};
+				
+		 	 	this.file_socket.on("connect", () => {
+		 	 		console.log("connected to fileserver");
+		 	 	})
+			 		this.interval = setInterval(() => {
+						data = getDataPointJSON(this.state.channels, tags, this.state.assignedTags)
+						console.log(data);
+		 	 			this.file_socket.emit("JSONData", data, err => {
+		 	 			if (err){
+		 	 				console.log(err);
+		 	 			}
+			  		});
+				 }, 1);
+			}
+		}
 	}
 
 	render() {
