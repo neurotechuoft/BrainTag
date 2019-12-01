@@ -116,9 +116,9 @@ export function getDataPointJSONForChannels(data, allTags, assignedTags, channel
         let tag = allTags[t];
         let index = assignedTags.indexOf(tag);
         structure.tags[tag] = (index > -1) ? 1 : 0;
-        if (index > -1) {
-            assignedTags.splice(index, 1);
-        }
+        // if (index > -1) {
+        //     assignedTags.splice(index, 1);
+        // }
     }
 
     return JSON.stringify(structure);
