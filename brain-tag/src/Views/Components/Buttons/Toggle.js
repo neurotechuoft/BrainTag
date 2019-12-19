@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button} from 'react-bootstrap';
 
@@ -32,6 +33,11 @@ class Toggle extends Component {
           {children}
         </Button>);
     }
+  }
+
+  Toggle.propTypes = {
+    children: PropTypes.string.isRequired,
+    background: PropTypes.string
   }
 
   export default Toggle;
