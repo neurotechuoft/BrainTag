@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Presenter from './presenter/';
+import Presenter from './Presenter/';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(<Presenter/>, document.getElementById('root'));
