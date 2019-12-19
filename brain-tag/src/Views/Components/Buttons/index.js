@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Toggle from './ToggleButton';
-import './ButtonContainer.css';
-class ButtonContainer extends Component{
+import Toggle from './Toggle';
+import './index.css';
+class Buttons extends Component{
 	render() {
 		return (
 		<div>
@@ -16,4 +16,4 @@ class ButtonContainer extends Component{
 		);
 	}
 }
-export default ButtonContainer;
+export default Buttons;

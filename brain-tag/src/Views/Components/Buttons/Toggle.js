@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
-class Toggle extends React.Component {
+
+class Toggle extends Component {
+
     constructor(props) {
       super(props);
       this.text = this.props.text;
@@ -29,6 +31,4 @@ class Toggle extends React.Component {
     }
   }
   
-  
-
   export default Toggle;
