@@ -2,13 +2,9 @@
 import React, {Component} from 'react';
 import ChannelView from '../Views/Channel';
 import io from 'socket.io-client';
-import Tags from './ApplicationTags';
+import {VIEWS, TAGS} from './Constants';
 import Services from '../Services';
 import DataFormatter from './DataFormatter';
-
-const VIEWS = {
-    CHANNELS: "channels"
-}
 
 /**
  * Presenter in MVP Architecture.
@@ -40,7 +36,7 @@ class Presenter extends Component {
     componentDidMount(){
         let record = false;
         let curChannels = {};
-        let allTags = Tags;
+        let allTags = TAGS;
         let curTags = allTags.reduce((acc,curr)=> (acc[curr]=false, allTags),{});
         this.setState({
             tags: curTags,
