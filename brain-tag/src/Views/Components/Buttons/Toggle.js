@@ -6,27 +6,31 @@ class Toggle extends Component {
 
     constructor(props) {
       super(props);
-      this.bg = this.props.bg;
-      this.state = {isToggleOn: true};
+      this.defaultEnabledBackground = '#5EBA7D';
+      this.state = {isEnabled: false};
       this.handleClick = this.handleClick.bind(this);
     }
   
     handleClick() {
       this.setState(state => ({
-        isToggleOn: !state.isToggleOn
+        isEnabled: !state.isEnabled
       }));
     }
   
     render() {
-      if(this.state.isToggleOn){
-        return(<Button className = "ml-3" onClick={this.handleClick}> {this.props.children}
+        let {children, enabledBackground} = this.props;
+        let {isEnabled} = this.state;
+        let style = {};
+        if (isEnabled) {
+            enabledBackground = enabledBackground ? enabledBackground : this.defaultEnabledBackground;
+            style={backgroundColor: enabledBackground};
+        }
+        return(<Button
+            className = "ml-3"
+            onClick={this.handleClick}
+            style={style}>
+          {children}
         </Button>);
-      }
-      else{
-        return(<Button className = "ml-3"onClick={this.handleClick} style={{ backgroundColor: this.bg}}>
-          {this.props.children}
-        </Button>);
-      }
     }
   }
 
