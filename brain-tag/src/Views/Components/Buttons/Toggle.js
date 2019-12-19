@@ -17,15 +17,22 @@ class Toggle extends Component {
         isEnabled: !state.isEnabled
       }));
     }
-  
-    render() {
-        let {children, enabledBackground} = this.props;
+
+    getStyle() {
+        let {enabledBackground} = this.props;
         let {isEnabled} = this.state;
         let style = {};
         if (isEnabled) {
             enabledBackground = enabledBackground ? enabledBackground : this.defaultEnabledBackground;
             style={backgroundColor: enabledBackground};
+            style.backgroundColor = enabledBackground;
         }
+        return style;
+    }
+
+    render() {
+        let {children} = this.props;
+        let style = this.getStyle();
         return(<Button
             className = "ml-3"
             onClick={this.handleClick}
