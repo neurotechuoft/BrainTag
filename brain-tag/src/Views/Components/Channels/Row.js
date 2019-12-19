@@ -1,7 +1,7 @@
 // Represents a single Channel Row
 
 import React from 'react';
-import './Channel.css';
+import './index.css';
 import RawData from './Plots/RawData';
 import PSD from './Plots/PSD';
 
