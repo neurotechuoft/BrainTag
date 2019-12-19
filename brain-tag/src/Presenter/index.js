@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import ChannelView from '../Views/Channel';
 import io from 'socket.io-client';
 import Tags from './ApplicationTags';
-import Services from '../Services/';
+import Services from '../Services';
 import DataFormatter from './DataFormatter';
 
 const VIEWS = {

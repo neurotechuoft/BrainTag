@@ -17,7 +17,7 @@ function FormatIncomingEEG(EEG){
     delete incomingEEG.timeKey;
 
     let formattedEEG = {
-        channels: incomingEEG.keys(),
+        channels: Object.keys(incomingEEG),
         time: timestamp
     };
 
