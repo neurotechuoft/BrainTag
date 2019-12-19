@@ -1,12 +1,5 @@
 // Services class to interface with external connections
 
-/** Example Usage
- * import Services from '/src/Services';
- * 
- * Services.EEG.addHandler(eventName, handler);
- * Services.Storage.addHandler("data", (data)=> {..do something...});
- */
-
  import Sockets from "./Sockets";
 
 let eeg_socket = (new Sockets()).eeg_socket;
@@ -16,6 +9,12 @@ function addHandler(socket, eventName, handler){
     socket.on(eventName, handler);
 }
 
+/** Example Usage
+ * import Services from '/src/Services';
+ * 
+ * Services.EEG.addHandler(eventName, handler);
+ * Services.Storage.addHandler("data", (data)=> {..do something...});
+ */
 export default {
     EEG: {
         addHandler: (eventName, handler) => addHandler(eeg_socket, eventName, handler)

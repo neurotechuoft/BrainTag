@@ -1,7 +1,7 @@
 // Represents all the channels + menu in the view
 
 import React, {Component} from 'react';
-import './Channel.css' // fpor styling of the charts (width, etc.)
+import './index.css' // fpor styling of the charts (width, etc.)
 import {parsePower, makeChart} from './powerHelpers.js'
 import Row from './Row.js'
 import bci from 'bcijs';
