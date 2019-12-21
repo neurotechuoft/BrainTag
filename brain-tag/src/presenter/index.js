@@ -25,7 +25,7 @@ class Presenter extends Component {
     }
 
     initializeChannels(incomingData){
-        let data = DataFormatter.FormatIncomingEEG(incomingData);
+        let data = DataFormatter.formatIncomingEEG(incomingData);
         let curChannels = data['channels'].reduce((acc,curr)=> (acc[curr]=false, data['channels']),{});
         this.setState({
             channels: curChannels
