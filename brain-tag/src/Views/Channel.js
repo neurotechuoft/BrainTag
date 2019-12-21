@@ -3,6 +3,7 @@
 import React from 'react';
 import Buttons from './Components/Buttons/';
 import Channels from './Components/Channels/';
+import './Channel.css'
 
 export default function Channel(props){
     return (
