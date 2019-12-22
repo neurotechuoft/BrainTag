@@ -8,12 +8,10 @@ class Toggle extends Component {
     constructor(props) {
       super(props);
       this.defaultEnabledBackground = '#5EBA7D';
-      this.state = {isEnabled: false};
     }
 
     getStyle() {
-        let {enabledBackground} = this.props;
-        let {isEnabled} = this.state;
+        let {enabledBackground, isEnabled} = this.props;
         let style = {};
         if (isEnabled) {
             enabledBackground = enabledBackground ? enabledBackground : this.defaultEnabledBackground;

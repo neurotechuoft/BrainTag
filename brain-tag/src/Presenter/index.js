@@ -22,11 +22,6 @@ class Presenter extends Component {
             channels: undefined
         }
         this.initializeChannels = this.initializeChannels.bind(this);
-        this.mockHandler = this.mockHandler.bind(this);
-    }
-
-    mockHandler(msg){
-        console.log(msg);
     }
 
     initializeChannels(incomingData){
@@ -48,6 +43,20 @@ class Presenter extends Component {
             record: record
         });
         Services.EEG.addHandler("data", this.initializeChannels);
+
+        this.toggleRecord = function (){
+            this.setState({
+                record: !this.state.record
+            })
+        }.bind(this);
+
+        this.toggleTag = function (tag){
+            let curTags = this.state.tags;
+            curTags[tag] = !curTags[tag];
+            this.setState({
+                tags: curTags
+            })
+        }.bind(this);
     }
 
     render() {
@@ -61,8 +70,8 @@ class Presenter extends Component {
                 <ChannelView socket={socket} 
                     tags={this.state.tags}
                     isRecord={this.state.record}
-                    onRecordToggle={()=>{this.mockHandler("Record Toggled")}}
-                    onTagToggle={(tag)=>{this.mockHandler("Tag Toggled: " + tag)}} />
+                    onRecordToggle={this.toggleRecord}
+                    onTagToggle={this.toggleTag} />
             );
         }
         return "";
