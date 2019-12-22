@@ -4,6 +4,7 @@ const VIEWS = {
     CHANNELS: "channels"
 };
 
+// All tags are unique
 const TAGS = [
     "Up",
     "Down",

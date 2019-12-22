@@ -22,11 +22,17 @@ class Presenter extends Component {
             channels: undefined
         }
         this.initializeChannels = this.initializeChannels.bind(this);
+        this.mockHandler = this.mockHandler.bind(this);
+    }
+
+    mockHandler(msg){
+        console.log(msg);
     }
 
     initializeChannels(incomingData){
         let data = DataFormatter.formatIncomingEEG(incomingData);
-        let curChannels = data['channels'].reduce((acc,curr)=> (acc[curr]=false, data['channels']),{});
+        let curChannels = {};
+        data['channels'].forEach((value)=> (curChannels[value]=false));
         this.setState({
             channels: curChannels
         });
@@ -35,13 +41,11 @@ class Presenter extends Component {
 
     componentDidMount(){
         let record = false;
-        let curChannels = {};
-        let allTags = TAGS;
-        let curTags = allTags.reduce((acc,curr)=> (acc[curr]=false, allTags),{});
+        let curTags = {};
+        TAGS.forEach((value)=> (curTags[value]=false));
         this.setState({
             tags: curTags,
-            record: record,
-            channels: curChannels
+            record: record
         });
         Services.EEG.addHandler("data", this.initializeChannels);
     }
@@ -54,7 +58,11 @@ class Presenter extends Component {
                 });
             
             return (
-                <ChannelView socket={socket} />
+                <ChannelView socket={socket} 
+                    tags={this.state.tags}
+                    isRecord={this.state.record}
+                    onRecordToggle={()=>{this.mockHandler("Record Toggled")}}
+                    onTagToggle={(tag)=>{this.mockHandler("Tag Toggled: " + tag)}} />
             );
         }
         return "";

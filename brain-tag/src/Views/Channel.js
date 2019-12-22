@@ -12,6 +12,11 @@ export default function Channel(props){
         <div className="Charts">
             <Channels className="chart" sampleRate='1000' intervalSize ='1000' socket={props.socket}  />
         </div>
-        <Buttons/>
+        <Buttons
+            tags={props.tags}
+            isRecord={props.isRecord}
+            onRecordToggle={props.onRecordToggle}
+            onTagToggle={(tag)=> {props.onTagToggle(tag)}}
+        />
     </div>);
 }
