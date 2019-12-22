@@ -26,7 +26,8 @@ class Presenter extends Component {
 
     initializeChannels(incomingData){
         let data = DataFormatter.formatIncomingEEG(incomingData);
-        let curChannels = data['channels'].reduce((acc,curr)=> (acc[curr]=false, data['channels']),{});
+        let curChannels = {};
+        data['channels'].forEach((value)=> (curChannels[value]=false));
         this.setState({
             channels: curChannels
         });
@@ -35,15 +36,27 @@ class Presenter extends Component {
 
     componentDidMount(){
         let record = false;
-        let curChannels = {};
-        let allTags = TAGS;
-        let curTags = allTags.reduce((acc,curr)=> (acc[curr]=false, allTags),{});
+        let curTags = {};
+        TAGS.forEach((value)=> (curTags[value]=false));
         this.setState({
             tags: curTags,
-            record: record,
-            channels: curChannels
+            record: record
         });
         Services.EEG.addHandler("data", this.initializeChannels);
+
+        this.toggleRecord = function (){
+            this.setState({
+                record: !this.state.record
+            })
+        }.bind(this);
+
+        this.toggleTag = function (tag){
+            let curTags = this.state.tags;
+            curTags[tag] = !curTags[tag];
+            this.setState({
+                tags: curTags
+            })
+        }.bind(this);
     }
 
     render() {
@@ -54,7 +67,11 @@ class Presenter extends Component {
                 });
             
             return (
-                <ChannelView socket={socket} />
+                <ChannelView socket={socket} 
+                    tags={this.state.tags}
+                    isRecord={this.state.record}
+                    onRecordToggle={this.toggleRecord}
+                    onTagToggle={this.toggleTag} />
             );
         }
         return "";
