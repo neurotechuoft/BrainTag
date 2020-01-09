@@ -21,6 +21,7 @@
     "electron": "electron ./src/electron.js",
     "electron-dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && npm run electron \"",
     "build": "react-scripts build",
+    "pretest": "npm install && eslint . --fix",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -41,6 +42,7 @@
   },
   "devDependencies": {
     "@types/jasmine": "^3.4.6",
-    "electron": "^7.1.1"
+    "electron": "^7.1.1",
+    "eslint-plugin-react": "^7.16.0"
   }
 }

@@ -2,8 +2,8 @@
 
 import React, {Component} from 'react';
 import './index.css' // fpor styling of the charts (width, etc.)
-import {parsePower, makeChart} from './powerHelpers.js'
-import Row from './Row.js'
+import {parsePower, makeChart} from './PowerHelpersNew.js/index.js'
+import Row from './Row.js';
 import bci from 'bcijs';
 
 class ChannelContainer extends Component {
@@ -41,7 +41,7 @@ class ChannelContainer extends Component {
 
     bindInterval () {
         if (this.state.socket) {
-        this.state.socket.on("data", (data, callback) => {
+            this.state.socket.on("data", (data) => {
                 // updates every second, can change, see hard coded at top 
                 var checkSize = (this.state.sig1).push(parseFloat(data.channel_1)); 
                 (this.state.sig2).push(parseFloat(data.channel_2));
@@ -51,10 +51,12 @@ class ChannelContainer extends Component {
                 // UPDATES EVERY SECOND, FOR AVERAEG RATE
                 if (checkSize % this.state.intervalSize === 0) { //so it only stores the last 1s of data 
                     // Gets band power over last second and binds it to this.state.power1, (for future graphing)
-                    let parsedPower = parsePower([bci.signalBandPower(this.state.sig1, this.state.sampleRate, this.state.bands), 
-                                                bci.signalBandPower(this.state.sig2, this.state.sampleRate, this.state.bands), 
-                                                bci.signalBandPower(this.state.sig3, this.state.sampleRate, this.state.bands),
-                                                bci.signalBandPower(this.state.sig4, this.state.sampleRate, this.state.bands)]);
+                    let parsedPower = parsePower([
+                        bci.signalBandPower(this.state.sig1, this.state.sampleRate, this.state.bands),
+                        bci.signalBandPower(this.state.sig2, this.state.sampleRate, this.state.bands),
+                        bci.signalBandPower(this.state.sig3, this.state.sampleRate, this.state.bands),
+                        bci.signalBandPower(this.state.sig4, this.state.sampleRate, this.state.bands)
+                    ]);
                     
                     // Represents different channels, each channel charts 5 bands 
                     let chart1 = makeChart(parsedPower[0], "1");
@@ -67,7 +69,8 @@ class ChannelContainer extends Component {
                         sig1 : [], sig2 : [], sig3 : [], sig4 : [], 
                     })
                 }
-        })}
+            })
+        }
     }
 
     render() {
