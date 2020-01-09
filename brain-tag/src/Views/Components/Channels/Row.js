@@ -13,8 +13,8 @@ class Row extends React.PureComponent {
                 {this.props.channelName}
             </div>
             <div className="column"> 
-                <RawData 
-                    socket={this.props.socket} 
+                <RawData
+                    addEEGHandler={this.props.addEEGHandler}
                     secondsToShow={1} 
                     refreshRate={60}
                     channel={this.props.channelName}

@@ -1,7 +1,6 @@
 // Presenter class
 import React, {Component} from 'react';
 import ChannelView from '../Views/Channel';
-import io from 'socket.io-client';
 import {VIEWS, TAGS} from './Constants';
 import Services from '../Services';
 import DataFormatter from './DataFormatter';
@@ -61,13 +60,9 @@ class Presenter extends Component {
 
     render() {
         if(this.state.page === VIEWS.CHANNELS){
-            var socket = io('http://localhost:8005/')
-                .on("connect", () => {
-                    console.log("connected!");
-                });
-            
             return (
-                <ChannelView socket={socket} 
+                <ChannelView
+                    addEEGHandler={Services.EEG.addHandler}
                     tags={this.state.tags}
                     isRecord={this.state.record}
                     onRecordToggle={this.toggleRecord}
