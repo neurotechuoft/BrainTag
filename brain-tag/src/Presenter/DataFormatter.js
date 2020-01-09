@@ -32,7 +32,7 @@ export function formatIncomingEEG(EEG){
 }
 
 function notTime(item) {
-    return item != 'time';
+    return item !== 'time';
 }
 
 /**

@@ -10,7 +10,7 @@ export default function Channel(props){
     <div className="App">
         <p className="header" > Chart View </p>
         <div className="Charts">
-            <Channels className="chart" sampleRate='1000' intervalSize ='1000' socket={props.socket}  />
+            <Channels className="chart" sampleRate='1000' intervalSize ='1000' addEEGHandler={props.addEEGHandler}  />
         </div>
         <Buttons
             tags={props.tags}

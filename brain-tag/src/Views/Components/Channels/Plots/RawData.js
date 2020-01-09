@@ -13,7 +13,7 @@ class DynamicLineChart extends Component {
 		super(props);
 
         this.updateChart = this.updateChart.bind(this);
-		this.socket = this.props.socket;
+		this.addEEGHandler = this.props.addEEGHandler.bind(this);
 		
 		this.initialTime = 0; // time of when first datapoint is received
 		this.dataToShow = this.props.secondsToShow * 1000; // amount of data to show
@@ -21,7 +21,7 @@ class DynamicLineChart extends Component {
 
 	componentDidMount() {
 		// wait for data on socket
-        this.socket.on('data', this.updateChart);
+        this.addEEGHandler('data', this.updateChart);
 
         // set interval for rendering
         setInterval(() => {
