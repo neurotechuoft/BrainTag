@@ -1,5 +1,7 @@
+// Represents the Real Time EEG Plot
+
 import React, { Component } from 'react';
-import CanvasJSReact from '../assets/canvasjs.react';
+import CanvasJSReact from '../../../Assets/canvasjs.react';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 var dps = []; // data points for graph
