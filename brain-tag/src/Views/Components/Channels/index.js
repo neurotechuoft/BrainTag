@@ -26,10 +26,10 @@ export default class ChannelContainer extends Component {
             chart2 : undefined,
             chart3 : undefined,
             chart4 : undefined,  
-      }
-      this.bindInterval = this.bindInterval.bind(this);
-      this.addEEGHandler = this.props.addEEGHandler.bind(this);
-      this.EEGHandler = this.EEGHandler.bind(this);
+        }
+        this.bindInterval = this.bindInterval.bind(this);
+        this.addEEGHandler = this.props.addEEGHandler.bind(this);
+        this.EEGHandler = this.EEGHandler.bind(this);
     }
 
     async componentDidMount() {
@@ -41,7 +41,7 @@ export default class ChannelContainer extends Component {
         console.log("ERROR", error, info);
     }
 
-    EEGHandler(data, callback) {
+    EEGHandler(data) {
         // updates every second, can change, see hard coded at top
         var checkSize = (this.state.sig1).push(parseFloat(data.channel_1));
         (this.state.sig2).push(parseFloat(data.channel_2));
@@ -95,7 +95,7 @@ export default class ChannelContainer extends Component {
 }
 
 ChannelContainer.propTypes = {
-    socket: PropTypes.object,
+    addEEGHandler: PropTypes.func.isRequired,
     sampleRate: PropTypes.number.isRequired,
     intervalSize: PropTypes.number.isRequired,
     className: PropTypes.string

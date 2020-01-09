@@ -13,14 +13,14 @@ export default class DynamicLineChart extends Component {
         super(props);
 
         this.updateChart = this.updateChart.bind(this);
-		this.addEEGHandler = this.props.addEEGHandler.bind(this);
+        this.addEEGHandler = this.props.addEEGHandler.bind(this);
 		
-		this.initialTime = 0; // time of when first datapoint is received
-		this.dataToShow = this.props.secondsToShow * 1000; // amount of data to show
-	}
+        this.initialTime = 0; // time of when first datapoint is received
+        this.dataToShow = this.props.secondsToShow * 1000; // amount of data to show
+    }
 
-	componentDidMount() {
-		// wait for data on socket
+    componentDidMount() {
+        // wait for data on socket
         this.addEEGHandler('data', this.updateChart);
 
         // set interval for rendering
@@ -73,7 +73,7 @@ export default class DynamicLineChart extends Component {
 }
 
 DynamicLineChart.propTypes = {
-    socket: PropTypes.object,
+    addEEGHandler: PropTypes.func.isRequired,
     secondsToShow: PropTypes.number.isRequired,
     channel: PropTypes.string.isRequired,
     refreshRate: PropTypes.number.isRequired

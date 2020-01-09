@@ -30,7 +30,7 @@ export default class Row extends React.PureComponent {
 }
 
 Row.propTypes = {
-    socket: PropTypes.object,
+    addEEGHandler: PropTypes.func.isRequired,
     options: PropTypes.object,
     channelName: PropTypes.string.isRequired
 }
