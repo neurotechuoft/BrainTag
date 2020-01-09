@@ -2,11 +2,12 @@
 
 import React, {Component} from 'react';
 import './index.css' // fpor styling of the charts (width, etc.)
-import {parsePower, makeChart} from './PowerHelpersNew.js/index.js'
+import {parsePower, makeChart} from './PowerHelpers.js/index.js.js'
 import Row from './Row.js';
 import bci from 'bcijs';
+import PropTypes from 'prop-types';
 
-class ChannelContainer extends Component {
+export default class ChannelContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -26,8 +27,8 @@ class ChannelContainer extends Component {
             chart2 : undefined,
             chart3 : undefined,
             chart4 : undefined,  
-      }
-      this.bindInterval = this.bindInterval.bind(this);
+        }
+        this.bindInterval = this.bindInterval.bind(this);
     }
 
     async componentDidMount() {
@@ -74,22 +75,27 @@ class ChannelContainer extends Component {
     }
 
     render() {
-    if (this.state.hasError) {
-        return <h1>Please run dummy server on port 8005. </h1>;
-    }
-    return(
-        <div> 
-            { (this.state.chart1 && this.state.chart2 && this.state.chart3 && this.state.chart4) &&
+        if (this.state.hasError) {
+            return <h1>Please run dummy server on port 8005. </h1>;
+        }
+        return(
+            <div> 
+                { (this.state.chart1 && this.state.chart2 && this.state.chart3 && this.state.chart4) &&
             <div> 
                 <Row channelName="channel_1" options={this.state.chart1} socket={this.props.socket}></Row> 
                 <Row channelName="channel_2" options={this.state.chart2} socket={this.props.socket}></Row> 
                 <Row channelName="channel_3" options={this.state.chart3} socket={this.props.socket}></Row> 
                 <Row channelName="channel_4" options={this.state.chart4} socket={this.props.socket}></Row> 
             </div>
-            }
-        </div>
+                }
+            </div>
         )
     }
 }
 
-export default ChannelContainer;
+ChannelContainer.propTypes = {
+    socket: PropTypes.object,
+    sampleRate: PropTypes.number.isRequired,
+    intervalSize: PropTypes.number.isRequired,
+    className: PropTypes.string
+}
