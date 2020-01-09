@@ -29,7 +29,8 @@
         "react/jsx-uses-react": "error",
         "react/jsx-uses-vars": "error",
         "no-console": 0,
-        "indent": "error"
+        "indent": "error",
+        "rest-spread-spacing": 1
     },
 
     "settings": {
