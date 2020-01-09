@@ -15,7 +15,7 @@ export default class Row extends React.PureComponent {
                 </div>
                 <div className="column"> 
                     <RawData 
-                        socket={this.props.socket} 
+                        addEEGHandler={this.props.addEEGHandler}
                         secondsToShow={1} 
                         refreshRate={60}
                         channel={this.props.channelName}
