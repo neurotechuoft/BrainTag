@@ -1,7 +1,51 @@
+// Class to Format incoming and outgoing data from the application.
+
+/**
+ * Returns formatted EEG data such that channel names are in an array.
+ * 
+ * Performance: O(n) for Object.keys() where n is the number of channels
+ * 
+ * @param EEG - Incoming EEG data. For ex:
+ * {"channel_1": number,
+ * "channel_2": number,
+ * "channel_3": number,
+ * "channel_4": number,
+ * "time": number}
+ * @returns - Formatted EEG data. For ex:
+ * {"channels":
+ * ["channel_1", "channel_2", "channel_3", "channel_4"],
+ * "time": number
+ * }
+ */
+export function formatIncomingEEG(EEG){
+    let incomingEEG = {... EEG};
+    let timeKey = "time";
+    let timestamp = EEG[timeKey];
+    delete incomingEEG.timeKey;
+
+    let formattedEEG = {
+        channels: Object.keys(incomingEEG),
+        time: timestamp
+    };
+
+    return formattedEEG;
+}
+
+function notTime(item) {
+    return item !== 'time';
+}
+
 /**
  * Returns a JSON object for a single moment of data, including readings from all channels on the headset.
  *
- * @param data - The JSON structure provided by the socket
+ * Performance: O(n^2) for the call to the helper method.
+ * 
+ * @param data - The JSON structure provided by the socket. For ex:
+ * {"channel_1": number,
+ * "channel_2": number,
+ * "channel_3": number,
+ * "channel_4": number,
+ * "time": number}
  * @param allTags - An array of all possible tags to assign to a data point
  * @param assignedTags - An array of all tags assigned to this data point
  * @return string A JSON string containing timestamp, all channel values, and all tag values
@@ -16,14 +60,17 @@ export function getDataPointJSON(data, allTags, assignedTags) {
     return getDataPointJSONForChannels(data, allTags, assignedTags, channels);
 }
 
-function notTime(item) {
-    return item != 'time';
-}
-
 /**
  * Returns a JSON object for a single moment of data, only including readings from 'channels' on the headset.
  *
- * @param data - The JSON structure provided by the socket
+ * Performance: O(n^2) for "Add Channels" where n is the number of channels 
+ * 
+ * @param data - The JSON structure provided by the socket. For ex:
+ * {"channel_1": number,
+ * "channel_2": number,
+ * "channel_3": number, 
+ * "channel_4": number,
+ * "time": number}
  * @param allTags - An array of all possible tags to assign to a data point
  * @param assignedTags - An array of all tags assigned to this data point
  * @param channels - An array of channels which will be found in the new data structure
@@ -31,7 +78,7 @@ function notTime(item) {
  */
 export function getDataPointJSONForChannels(data, allTags, assignedTags, channels) {
     /**
-     * JSON STRUCTURE:
+     * OUTPUT JSON STRUCTURE:
      *
      * {
      *     timestamp:,
@@ -75,4 +122,8 @@ export function getDataPointJSONForChannels(data, allTags, assignedTags, channel
     }
 
     return JSON.stringify(structure);
+}
+
+export default {
+    formatIncomingEEG: formatIncomingEEG
 }
