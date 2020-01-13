@@ -20,9 +20,14 @@ class Presenter extends Component {
             // Bool: T/F whether the current data is being recorded
             record: undefined,
             // Object where keys are all Channel names, values are Bool: whether the channel is toggled "On" or not
-            channels: undefined
+            channels: undefined,
+
+            interval: undefined,
+
+            tags_list: []
         }
         this.initializeChannels = this.initializeChannels.bind(this);
+        this.sendData = this.sendData.bind(this);
     }
 
     initializeChannels(incomingData){
@@ -35,6 +40,10 @@ class Presenter extends Component {
         Services.EEG.removeHandler("data", this.initializeChannels);
     }
 
+    sendData(){
+         return getDataPointJSON(this.state.channels, TAGS, this.state.tags_list);
+    }
+
     componentDidMount(){
         let record = false;
         let curTags = {};
@@ -43,12 +52,22 @@ class Presenter extends Component {
             tags: curTags,
             record: record
         });
-        Services.EEG.addHandler("data", this.initializeChannels);
+        Services.EEG.addHandler("data", this.initializeChannels);        
 
         this.toggleRecord = function (){
             this.setState({
                 record: !this.state.record
+            }, () => {
+                if (!this.state.record){
+                    clearInterval(this.state.interval)
+                }
+                else{
+                    this.state.interval = setInterval(() => {
+                        Services.Storage.emitHandler("JSONData", this.sendData());
+                    }, 1);
+                }
             })
+            
         }.bind(this);
 
         this.toggleTag = function (tag){
@@ -56,9 +75,20 @@ class Presenter extends Component {
             curTags[tag] = !curTags[tag];
             this.setState({
                 tags: curTags
+            }, () => {
+                let tagslist = []
+                TAGS.forEach(tag => {
+                    if (this.state.tags[tag]){
+                        tagslist.push(tag);
+                    }
+                })
+                this.setState({
+                    tags_list: tagslist
+                })
             })
         }.bind(this);
     }
+    
 
     render() {
         if(this.state.page === VIEWS.CHANNELS){

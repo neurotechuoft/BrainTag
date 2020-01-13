@@ -92,7 +92,8 @@ export function getDataPointJSONForChannels(data, allTags, assignedTags, channel
      * NOTES: Channels are listed if visible. All tags are listed.
      */
     if (typeof data == 'string') {
-        data = JSON.parse(data);
+       var data = JSON.parse(data);
+        console.log(data);
     }
 
     // Create JSON Structure
