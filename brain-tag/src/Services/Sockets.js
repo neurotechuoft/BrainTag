@@ -23,10 +23,6 @@ export default class Sockets {
                 .on("connect", () => {
                     console.log("Connected to Data Storage socket.");
                 });
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
             Sockets.instance = this;
         }
         return Sockets.instance

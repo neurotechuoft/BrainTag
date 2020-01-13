@@ -3,11 +3,7 @@ import React, {Component} from 'react';
 import ChannelView from '../Views/Channel';
 import {VIEWS, TAGS} from './Constants';
 import Services from '../Services';
-<<<<<<< Updated upstream
-import DataFormatter from './DataFormatter';
-=======
 import DataFormatter, { getDataPointJSON } from './DataFormatter';
->>>>>>> Stashed changes
 
 /**
  * Presenter in MVP Architecture.
@@ -22,18 +18,14 @@ class Presenter extends Component {
             // Bool: T/F whether the current data is being recorded
             record: undefined,
             // Object where keys are all Channel names, values are Bool: whether the channel is toggled "On" or not
-<<<<<<< Updated upstream
-            channels: undefined
-        }
-        this.initializeChannels = this.initializeChannels.bind(this);
-=======
             channels: undefined,
 
-            interval: undefined
+            interval: undefined,
+
+            tags_list: []
         }
         this.initializeChannels = this.initializeChannels.bind(this);
         this.sendData = this.sendData.bind(this);
->>>>>>> Stashed changes
     }
 
     initializeChannels(incomingData){
@@ -46,13 +38,10 @@ class Presenter extends Component {
         Services.EEG.removeHandler("data", this.initializeChannels);
     }
 
-<<<<<<< Updated upstream
-=======
     sendData(){
-         return getDataPointJSON(this.state.channels, TAGS, this.state.tags);
+         return getDataPointJSON(this.state.channels, TAGS, this.state.tags_list);
     }
 
->>>>>>> Stashed changes
     componentDidMount(){
         let record = false;
         let curTags = {};
@@ -61,30 +50,22 @@ class Presenter extends Component {
             tags: curTags,
             record: record
         });
-<<<<<<< Updated upstream
-        Services.EEG.addHandler("data", this.initializeChannels);
-
-        this.toggleRecord = function (){
-            this.setState({
-                record: !this.state.record
-            })
-=======
         Services.EEG.addHandler("data", this.initializeChannels);        
 
         this.toggleRecord = function (){
-            if (this.state.record){
-                clearInterval(this.state.interval)
-            }
             this.setState({
                 record: !this.state.record
             }, () => {
-                console.log("here");
-                this.interval = setInterval(() => {
-                    Services.Storage.emitHandler("JSONData", this.sendData());
-                }, 1);
+                if (!this.state.record){
+                    clearInterval(this.state.interval)
+                }
+                else{
+                    this.state.interval = setInterval(() => {
+                        Services.Storage.emitHandler("JSONData", this.sendData());
+                    }, 1);
+                }
             })
             
->>>>>>> Stashed changes
         }.bind(this);
 
         this.toggleTag = function (tag){
@@ -92,18 +73,20 @@ class Presenter extends Component {
             curTags[tag] = !curTags[tag];
             this.setState({
                 tags: curTags
-<<<<<<< Updated upstream
-            })
-        }.bind(this);
-    }
-=======
             }, () => {
-                console.log(this.state.tags)
+                let tagslist = []
+                TAGS.forEach(tag => {
+                    if (this.state.tags[tag]){
+                        tagslist.push(tag);
+                    }
+                })
+                this.setState({
+                    tags_list: tagslist
+                })
             })
         }.bind(this);
     }
     
->>>>>>> Stashed changes
 
     render() {
         if(this.state.page === VIEWS.CHANNELS){
