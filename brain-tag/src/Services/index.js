@@ -14,6 +14,15 @@ function addHandler(socket, eventName, handler){
     socket.on(eventName, handler);
 }
 
+function emitHandler(socket, eventName, handler){
+    if(!socket.connected){
+        console.log("Cannot add handler to socket that is closed: ", socket);
+    }
+    console.log(handler);
+
+    socket.emit(eventName, handler);
+}
+
 // Removes an event handler for the event name for the specified socket
 // socket is mandatory. eventName and handler are optional.
 // If handler is not specified, all listeners for the eventName are removed.
@@ -47,6 +56,8 @@ export default {
     },
     Storage: {
         addHandler: (eventName, handler) => addHandler(store_socket, eventName, handler),
-        removeHandler: (eventName, handler) => removeHandler(store_socket, eventName, handler)
+        removeHandler: (eventName, handler) => removeHandler(store_socket, eventName, handler),
+        emitHandler: (eventName, handler) => emitHandler(store_socket, eventName, handler)
     }
+
 };
