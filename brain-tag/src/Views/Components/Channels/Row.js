@@ -6,26 +6,47 @@ import RawData from './Plots/RawData';
 import PSD from './Plots/PSD';
 
 class Row extends React.PureComponent {
-    render() {  
-    return(
-        <div  className="row">
-            <div className="channelTitle"> 
-                {this.props.channelName}
+
+    render() {
+        let {channelName, addEEGHandler, options} = this.props;
+
+        let name = (
+            <div className="channelTitle">
+                {channelName}
             </div>
-            <div className="column"> 
+        );
+        let rawDataPlot = (
+            <div className="column">
                 <RawData
-                    addEEGHandler={this.props.addEEGHandler}
-                    secondsToShow={1} 
-                    refreshRate={60}
-                    channel={this.props.channelName}
+                addEEGHandler={addEEGHandler}
+                secondsToShow={1}
+                refreshRate={60}
+                channel={channelName}
                 />
             </div>
-            <div className="column"> 
-                <PSD options={this.props.options} />
+        );
+        let psdPlot = (
+            <div className="column">
+                <PSD options={options} />
             </div>
-        </div>
+        );
+
+        return(
+            <div  id={getRowId(channelName)} className={getRowClass()}>
+                {name}
+                {rawDataPlot}
+                {psdPlot}
+            </div>
         );
     }
   }
 
-export default Row;
+  function getRowId(channelName) {
+      return "channel-" + channelName;
+  }
+
+  function getRowClass() {
+      return "row";
+  }
+
+export {Row, getRowId, getRowClass};

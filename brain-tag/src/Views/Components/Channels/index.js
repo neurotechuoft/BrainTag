@@ -2,8 +2,9 @@
 
 import React, {Component} from 'react';
 import './index.css' // fpor styling of the charts (width, etc.)
+import {Menu} from './Menu';
 import {parsePower, makeChart} from './powerHelpers.js'
-import Row from './Row.js'
+import {Row} from './Row.js'
 import bci from 'bcijs';
 
 class ChannelContainer extends Component {
@@ -78,8 +79,10 @@ class ChannelContainer extends Component {
     if (this.state.hasError) {
         return <h1>Please run dummy server on port 8005. </h1>;
     }
+    let channels = ['channel_1', 'channel_2', 'channel_3', 'channel_4'];
     return(
-        <div> 
+        <div>
+            <Menu channels={channels} />
             { (this.state.chart1 && this.state.chart2 && this.state.chart3 && this.state.chart4) &&
             <div> 
                 <Row channelName="channel_1" options={this.state.chart1} addEEGHandler={this.addEEGHandler}></Row>
