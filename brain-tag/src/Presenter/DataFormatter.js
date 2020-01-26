@@ -18,7 +18,7 @@
  * }
  */
 export function formatIncomingEEG(EEG){
-    let incomingEEG = {... EEG};
+    let incomingEEG = {...EEG};
     let timeKey = "time";
     let timestamp = EEG[timeKey];
     delete incomingEEG.timeKey;

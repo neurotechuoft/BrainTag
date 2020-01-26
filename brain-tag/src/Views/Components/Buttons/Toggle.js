@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button} from 'react-bootstrap';
 
-class Toggle extends Component {
-
+export default class Toggle extends Component {
     constructor(props) {
-      super(props);
-      this.defaultEnabledBackground = '#5EBA7D';
+        super(props);
+        this.defaultEnabledBackground = '#5EBA7D';
     }
 
     getStyle() {
@@ -28,14 +27,15 @@ class Toggle extends Component {
             className = "ml-3"
             onClick={this.props.onClick}
             style={style}>
-          {children}
+            {children}
         </Button>);
     }
-  }
+}
 
-  Toggle.propTypes = {
+Toggle.propTypes = {
     children: PropTypes.string.isRequired,
-    background: PropTypes.string
-  }
+    enabledBackground: PropTypes.string,
+    isEnabled: PropTypes.bool.isRequired,
+    onClick: PropTypes.func.isRequired
+}
 
-  export default Toggle;

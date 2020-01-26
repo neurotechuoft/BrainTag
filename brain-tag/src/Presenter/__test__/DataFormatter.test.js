@@ -36,9 +36,6 @@ describe("getDataPointJSONForChannels", () => {
 });
 
 /* HELPERS */
-
-let i=0;
-
 function setupTest(includeAllChannels) {
 
     // CREATE: INPUT FROM NEUROSTACK

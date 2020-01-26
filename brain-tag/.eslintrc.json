@@ -1,0 +1,41 @@
+{
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
+
+    "plugins": [
+        "react"
+    ],
+
+    "parserOptions": {
+        "sourceType": "module",
+        "ecmaVersion": 9,
+        "ecmaFeatures": {
+            "jsx": true,
+            "modules": true
+        }
+    },
+
+    "env": {
+        "browser": true,
+        "es6": true,
+        "node": true,
+        "jest": true
+    },
+
+    "rules": {
+        "max-len": ["error", 120],
+        "react/jsx-uses-react": "error",
+        "react/jsx-uses-vars": "error",
+        "no-console": 0,
+        "indent": "error",
+        "rest-spread-spacing": 1
+    },
+
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    }
+}

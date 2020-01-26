@@ -1,12 +1,13 @@
 // Represents all the channels + menu in the view
 
 import React, {Component} from 'react';
-import './index.css' // fpor styling of the charts (width, etc.)
-import {parsePower, makeChart} from './powerHelpers.js'
-import Row from './Row.js'
+import './index.css'; // fpor styling of the charts (width, etc.)
+import {parsePower, makeChart} from './PowerHelpers.js';
+import Row from './Row.js';
 import bci from 'bcijs';
+import PropTypes from 'prop-types';
 
-class ChannelContainer extends Component {
+export default class ChannelContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -25,10 +26,10 @@ class ChannelContainer extends Component {
             chart2 : undefined,
             chart3 : undefined,
             chart4 : undefined,  
-      }
-      this.bindInterval = this.bindInterval.bind(this);
-      this.addEEGHandler = this.props.addEEGHandler.bind(this);
-      this.EEGHandler = this.EEGHandler.bind(this);
+        }
+        this.bindInterval = this.bindInterval.bind(this);
+        this.addEEGHandler = this.props.addEEGHandler.bind(this);
+        this.EEGHandler = this.EEGHandler.bind(this);
     }
 
     async componentDidMount() {
@@ -40,7 +41,7 @@ class ChannelContainer extends Component {
         console.log("ERROR", error, info);
     }
 
-    EEGHandler(data, callback) {
+    EEGHandler(data) {
         // updates every second, can change, see hard coded at top
         var checkSize = (this.state.sig1).push(parseFloat(data.channel_1));
         (this.state.sig2).push(parseFloat(data.channel_2));
@@ -75,22 +76,27 @@ class ChannelContainer extends Component {
     }
 
     render() {
-    if (this.state.hasError) {
-        return <h1>Please run dummy server on port 8005. </h1>;
-    }
-    return(
-        <div> 
-            { (this.state.chart1 && this.state.chart2 && this.state.chart3 && this.state.chart4) &&
+        if (this.state.hasError) {
+            return <h1>Please run dummy server on port 8005. </h1>;
+        }
+        return(
+            <div> 
+                { (this.state.chart1 && this.state.chart2 && this.state.chart3 && this.state.chart4) &&
             <div> 
                 <Row channelName="channel_1" options={this.state.chart1} addEEGHandler={this.addEEGHandler}></Row>
                 <Row channelName="channel_2" options={this.state.chart2} addEEGHandler={this.addEEGHandler}></Row>
                 <Row channelName="channel_3" options={this.state.chart3} addEEGHandler={this.addEEGHandler}></Row>
                 <Row channelName="channel_4" options={this.state.chart4} addEEGHandler={this.addEEGHandler}></Row>
             </div>
-            }
-        </div>
+                }
+            </div>
         )
     }
 }
 
-export default ChannelContainer;
+ChannelContainer.propTypes = {
+    addEEGHandler: PropTypes.func.isRequired,
+    sampleRate: PropTypes.number.isRequired,
+    intervalSize: PropTypes.number.isRequired,
+    className: PropTypes.string
+}
