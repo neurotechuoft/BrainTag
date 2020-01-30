@@ -2,30 +2,21 @@
 
 import React, {Component} from 'react';
 import './index.css'; // fpor styling of the charts (width, etc.)
-import {parsePower, makeChart} from './PowerHelpers.js';
+import {calcPsdAllChan} from './PowerHelpers.js';
 import Row from './Row.js';
-import bci from 'bcijs';
 import PropTypes from 'prop-types';
 
 export default class ChannelContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            bands: ['delta',  'theta', 'alpha',  'beta',  'gamma'], 
             sampleRate : this.props.sampleRate, //WARNING: HARDCODED 
-            intervalSize :  this.props.intervalSize,
+            intervalSize :  parseInt(this.props.intervalSize),
             hasError: false, //see component did catch
             //record last 1s from socket 
-            sig1: [],
-            sig2: [],
-            sig3: [],
-            sig4: [],
-
-
-            chart1 : undefined,
-            chart2 : undefined,
-            chart3 : undefined,
-            chart4 : undefined,  
+            channels : [],
+            signals : {}, //key is channels
+            charts :  {}, //key is channels
         }
         this.bindInterval = this.bindInterval.bind(this);
         this.addEEGHandler = this.props.addEEGHandler.bind(this);
@@ -41,31 +32,62 @@ export default class ChannelContainer extends Component {
         console.log("ERROR", error, info);
     }
 
+    // helper to append new items from the socket without hardcoding 
+    appendItem(channelName, toAppend) {
+        let current = this.state.signals;
+        if (!current[channelName]) { //if first and key is unknown 
+            current[channelName] = [toAppend]
+        }
+        else {
+            current[channelName].push(toAppend)
+        }
+        this.setState({signals : current})
+    }
+
+    
+    // not hard code number of channels, shifts by one second window (4s total)
+    shiftWindow() {
+        let updated = {};
+        for (let i=0; i<this.state.channels.length; i++) {
+            let channelName = this.state.channels[i]
+            let sigCopy = this.state.signals[channelName]
+            sigCopy.splice(0, this.state.sampleRate)
+            updated[channelName] = sigCopy
+            console.log("updated", updated[channelName], updated[channelName].length)
+
+        }
+        this.setState({signals : updated})
+    }
+
+    // not hardcode number of channels
+    renderRows() {
+        let rows = [];
+        for (let i=0; i<this.state.channels.length; i++) {
+            let channelName = this.state.channels[i]
+            rows.push(<Row channelName={channelName} options={this.state.charts[channelName]} 
+                addEEGHandler={this.addEEGHandler}></Row>);
+        }
+        return(rows)
+    }
+
     EEGHandler(data) {
-        // updates every second, can change, see hard coded at top
-        var checkSize = (this.state.sig1).push(parseFloat(data.channel_1));
-        (this.state.sig2).push(parseFloat(data.channel_2));
-        (this.state.sig3).push(parseFloat(data.channel_3));
-        (this.state.sig4).push(parseFloat(data.channel_4));
-
-        // UPDATES EVERY SECOND, FOR AVERAEG RATE
-        if (checkSize % this.state.intervalSize === 0) { //so it only stores the last 1s of data
-            // Gets band power over last second and binds it to this.state.power1, (for future graphing)
-            let parsedPower = parsePower([bci.signalBandPower(this.state.sig1, this.state.sampleRate, this.state.bands),
-                bci.signalBandPower(this.state.sig2, this.state.sampleRate, this.state.bands),
-                bci.signalBandPower(this.state.sig3, this.state.sampleRate, this.state.bands),
-                bci.signalBandPower(this.state.sig4, this.state.sampleRate, this.state.bands)]);
-
-            // Represents different channels, each channel charts 5 bands
-            let chart1 = makeChart(parsedPower[0], "1");
-            let chart2 = makeChart(parsedPower[1], "2");
-            let chart3 = makeChart(parsedPower[2], "3");
-            let chart4 = makeChart(parsedPower[3], "4");
-
-            this.setState({
-                chart1 : chart1, chart2 : chart2, chart3 : chart3, chart4 : chart4,
-                sig1 : [], sig2 : [], sig3 : [], sig4 : [],
-            });
+        let keys = Object.keys(data);
+        keys.pop() //assumes last element is time 
+        this.setState({channels : keys})
+        // loop over keys in channels to make arrays of data 
+        for (let i=0; i<this.state.channels.length; i++) {
+            let channelName = this.state.channels[i]
+            let toAppend = parseFloat(data[channelName])
+            this.appendItem(channelName, toAppend)
+        }
+        //check to see if array is updated to be the display size
+        if (this.state.signals[keys[0]].length === this.state.intervalSize ) {
+            // calculate psds
+            console.log("IS CORRECT SIZE")
+            let psdAsArr = calcPsdAllChan(this.state.signals, this.state.channels)
+            this.setState({charts : psdAsArr})
+            // call helper to splice arrays so they don't contain last bits
+            this.shiftWindow();
         }
     }
 
@@ -81,13 +103,8 @@ export default class ChannelContainer extends Component {
         }
         return(
             <div> 
-                { (this.state.chart1 && this.state.chart2 && this.state.chart3 && this.state.chart4) &&
-            <div> 
-                <Row channelName="channel_1" options={this.state.chart1} addEEGHandler={this.addEEGHandler}></Row>
-                <Row channelName="channel_2" options={this.state.chart2} addEEGHandler={this.addEEGHandler}></Row>
-                <Row channelName="channel_3" options={this.state.chart3} addEEGHandler={this.addEEGHandler}></Row>
-                <Row channelName="channel_4" options={this.state.chart4} addEEGHandler={this.addEEGHandler}></Row>
-            </div>
+                { (this.state.charts) &&
+                <div>{this.renderRows()}</div>
                 }
             </div>
         )
