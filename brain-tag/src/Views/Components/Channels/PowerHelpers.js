@@ -4,14 +4,14 @@ import bci from 'bcijs';
 
 
 // From my understanding it will give watts/hz
-function parsePowerPSD(powerResults) {
+function parsePowerPSD(powerResults, fftSize, sampleRate) {
     //operates on only one channel at a time
     let parsedChannel = []
     for (let i=0; i<powerResults.length; i ++) {
-        let point = {label: i+1 , y: powerResults[i]}
+        let point = {label: i*(sampleRate / fftSize) , y: powerResults[i]}
         parsedChannel.push(point)
     }
-    return(parsedChannel.slice(0,40))
+    return(parsedChannel.slice(0,40*(fftSize / sampleRate)))
 }
 
 
@@ -21,12 +21,7 @@ function makeChart(power, channelName) {
     let options = { 
         animationEnabled: true,	
         axisX: {						
-            title: "Frequency",
-            stripLines: [
-                { value: 4 }, 
-                { value: 8 }, 
-                { value: 13}, 
-                { value: 31}],   
+            title: "Frequency"
         },
         axisY: {						
             title: "Power"
@@ -47,12 +42,13 @@ function makeChart(power, channelName) {
 
 
 // helper to put psds into array for downstream analysis and prettier code
-function calcPsdAllChan(chans, channelNames) { // chans is an array of all channels
+function calcPsdAllChan(chans, channelNames, fftSize, sampleRate) { // chans is an array of all channels
     let charts = {}
     for (let i=0; i<channelNames.length; i++) {
         let chanSig = chans[channelNames[i]]
-        let psd = bci.psd(chanSig)
-        let parsedPsd = parsePowerPSD(psd)
+        console.log("FFTSIZE", fftSize)
+        let psd = bci.psd(chanSig, {fftSize : fftSize, truncate : true})
+        let parsedPsd = parsePowerPSD(psd, fftSize, sampleRate)
         let psdChart = makeChart(parsedPsd, channelNames[i]);
         charts[channelNames[i]] = psdChart
     }

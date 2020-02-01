@@ -10,7 +10,7 @@ export default class ChannelContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sampleRate : this.props.sampleRate, //WARNING: HARDCODED 
+            sampleRate : parseInt(this.props.sampleRate), //WARNING: HARDCODED 
             intervalSize :  parseInt(this.props.intervalSize),
             hasError: false, //see component did catch
             //record last 1s from socket 
@@ -83,8 +83,9 @@ export default class ChannelContainer extends Component {
         //check to see if array is updated to be the display size
         if (this.state.signals[keys[0]].length === this.state.intervalSize ) {
             // calculate psds
-            console.log("IS CORRECT SIZE")
-            let psdAsArr = calcPsdAllChan(this.state.signals, this.state.channels)
+            console.log("RATES check", this.state.intervalSize, this.state.sampleRate)
+            let psdAsArr = calcPsdAllChan(this.state.signals, this.state.channels, 
+                this.state.intervalSize, this.state.sampleRate)
             this.setState({charts : psdAsArr})
             // call helper to splice arrays so they don't contain last bits
             this.shiftWindow();
