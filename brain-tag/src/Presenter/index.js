@@ -10,6 +10,11 @@ import ContextProvider from '../Services/GlobalContext';
 /**
  * Presenter in MVP Architecture.
  */
+var data1 = {
+        channels: undefined,
+        tags: undefined,
+        timestamp: undefined
+}
 class Presenter extends Component {
     constructor(props){
         super(props);
@@ -33,6 +38,8 @@ class Presenter extends Component {
         this.getData = this.getData.bind(this);
     }
 
+    
+
     initializeChannels(incomingData){
         let data = DataFormatter.formatIncomingEEG(incomingData);
        // console.log(incomingData);
@@ -47,13 +54,13 @@ class Presenter extends Component {
     }
 
     sendData(){
-        let data = {
-            timestamp: this.state.timestamp,
-            channels: this.state.channels,
-            tags: this.state.tags
+        // let data = {
+        //     timestamp: data.timestamp,
+        //     channels: data.channels,
+        //     tags: data.tags
 
-        }
-         return getDataPointJSON(data, TAGS, this.state.tags_list);
+        // }
+         return getDataPointJSON(data1, TAGS, this.state.tags_list);
     }
 
     getData(data){
@@ -70,10 +77,11 @@ class Presenter extends Component {
         
     //    console.log(points)
 
-        this.setState({
+        data1 = {
             channels: points,
-            timestamp: data.time
-        });
+            timestamp: data.time,
+            tags: this.state.tags
+        };
       //  console.log(this.state)
     }
 
