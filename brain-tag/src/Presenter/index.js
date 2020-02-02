@@ -61,12 +61,16 @@ class Presenter extends Component {
             "channel_1": data.channel_1,
             "channel_2": data.channel_2,
             "channel_3": data.channel_3,
-            "channel_4": data.channel_4
+            "channel_4": data.channel_4,
+
         };
+       // console.log(data);
+        
     //    console.log(points)
 
         this.setState({
-            channels: points
+            channels: points,
+            timestamp: data.time
         });
       //  console.log(this.state)
     }
@@ -91,9 +95,7 @@ class Presenter extends Component {
                 }
                 else{
                     this.state.interval = setInterval(() => {
-                        Services.EEG.addHandler("data", data => this.getData(data));
-                        Services.Storage.emitHandler("JSONData", this.sendData);
-
+                        Services.EEG.addHandler("data", data => this.getData(data), Services.Storage.emitHandler("JSONData", this.sendData()));
                     }, 1);
                 }
             })
