@@ -7,11 +7,14 @@ let store_socket = (new Sockets()).store_socket;
 
 // Adds an event handler to the eventName for the specified socket
 // All arguments are mandatory
-function addHandler(socket, eventName, handler){
+function addHandler(socket, eventName, handler, callback){
     if(!socket.connected){
         console.log("Cannot add handler to a socket that is closed: ", socket);
     }
     socket.on(eventName, handler);
+    if (callback){
+        callback();
+    }
 }
 
 function emitHandler(socket, eventName, handler){
@@ -55,7 +58,7 @@ export default {
         removeHandler: (eventName, handler) => removeHandler(eeg_socket, eventName, handler)
     },
     Storage: {
-        addHandler: (eventName, handler) => addHandler(store_socket, eventName, handler),
+        addHandler: (eventName, handler, callback) => addHandler(store_socket, eventName, handler, callback),
         removeHandler: (eventName, handler) => removeHandler(store_socket, eventName, handler),
         emitHandler: (eventName, handler) => emitHandler(store_socket, eventName, handler)
     }
