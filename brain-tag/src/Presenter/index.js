@@ -24,24 +24,53 @@ class Presenter extends Component {
 
             interval: undefined,
 
-            tags_list: []
+            tags_list: [],
+            
+            timestamp: undefined
         }
         this.initializeChannels = this.initializeChannels.bind(this);
         this.sendData = this.sendData.bind(this);
+        this.getData = this.getData.bind(this);
     }
 
     initializeChannels(incomingData){
         let data = DataFormatter.formatIncomingEEG(incomingData);
+       // console.log(incomingData);
+    //    console.log(data);
         let curChannels = {};
-        data['channels'].forEach((value)=> (curChannels[value]=false));
+        data['channels'].forEach((value)=> (curChannels[value]=0));
+      //  console.log(curChannels);
         this.setState({
-            channels: curChannels
+            channels: curChannels,
         });
         Services.EEG.removeHandler("data", this.initializeChannels);
     }
 
     sendData(){
-         return getDataPointJSON(this.state.channels, TAGS, this.state.tags_list);
+        let data = {
+            timestamp: this.state.timestamp,
+            channels: this.state.channels,
+            tags: this.state.tags
+
+        }
+         return getDataPointJSON(data, TAGS, this.state.tags_list);
+    }
+
+    getData(data){
+        // let data = DataFormatter.formatIncomingEEG(incomingData);
+        // data['channels'].forEach(value) =>(curChannels(value)=);
+        const points = {
+            "channel_1": data.channel_1,
+            "channel_2": data.channel_2,
+            "channel_3": data.channel_3,
+            "channel_4": data.channel_4
+        };
+    //    console.log(points)
+
+        this.setState({
+            channels: points
+        });
+      //  console.log(this.state)
     }
 
     componentDidMount(){
@@ -60,10 +89,13 @@ class Presenter extends Component {
             }, () => {
                 if (!this.state.record){
                     clearInterval(this.state.interval)
+                    Services.EEG.removeHandler("data", this.getData);
                 }
                 else{
                     this.state.interval = setInterval(() => {
-                        Services.Storage.emitHandler("JSONData", this.sendData());
+                        Services.EEG.addHandler("data", data => this.getData(data));
+                        Services.Storage.emitHandler("JSONData", this.sendData);
+
                     }, 1);
                 }
             })

@@ -55,6 +55,8 @@ export function getDataPointJSON(data, allTags, assignedTags) {
     if (typeof data == 'string') {
         data = JSON.parse(data);
     }
+    console.log(data);
+
     let keys = Object.keys(data);
     let channels = keys.filter(notTime);
     return getDataPointJSONForChannels(data, allTags, assignedTags, channels);
@@ -92,8 +94,7 @@ export function getDataPointJSONForChannels(data, allTags, assignedTags, channel
      * NOTES: Channels are listed if visible. All tags are listed.
      */
     if (typeof data == 'string') {
-       var data = JSON.parse(data);
-        console.log(data);
+        data = JSON.parse(data);
     }
 
     // Create JSON Structure
