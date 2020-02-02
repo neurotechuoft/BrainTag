@@ -55,7 +55,7 @@ export function getDataPointJSON(data, allTags, assignedTags) {
     if (typeof data == 'string') {
         data = JSON.parse(data);
     }
-    console.log(data);
+  //  console.log(data);
 
     let keys = Object.keys(data);
     let channels = keys.filter(notTime);
