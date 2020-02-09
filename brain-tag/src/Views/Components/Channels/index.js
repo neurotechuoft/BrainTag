@@ -5,13 +5,13 @@ import './index.css'; // fpor styling of the charts (width, etc.)
 import {calcPsdAllChan} from './PowerHelpers.js';
 import Row from './Row.js';
 import PropTypes from 'prop-types';
+import {Store as ContextInherit} from '../../../Services/GlobalContext';
+
 
 export default class ChannelContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sampleRate : parseInt(this.props.sampleRate), //WARNING: HARDCODED 
-            intervalSize :  parseInt(this.props.intervalSize),
             hasError: false, //see component did catch
             //record last 1s from socket 
             channels : [],
@@ -19,7 +19,6 @@ export default class ChannelContainer extends Component {
             charts :  {}, //key is channels
         }
         this.bindInterval = this.bindInterval.bind(this);
-        this.addEEGHandler = this.props.addEEGHandler.bind(this);
         this.EEGHandler = this.EEGHandler.bind(this);
     }
 
@@ -51,7 +50,7 @@ export default class ChannelContainer extends Component {
         for (let i=0; i<this.state.channels.length; i++) {
             let channelName = this.state.channels[i]
             let sigCopy = this.state.signals[channelName]
-            sigCopy.splice(0, this.state.sampleRate)
+            sigCopy.splice(0, (this.context.intervalSize*this.context.refreshRate))
             updated[channelName] = sigCopy
             console.log("updated", updated[channelName], updated[channelName].length)
 
@@ -65,7 +64,7 @@ export default class ChannelContainer extends Component {
         for (let i=0; i<this.state.channels.length; i++) {
             let channelName = this.state.channels[i]
             rows.push(<Row channelName={channelName} options={this.state.charts[channelName]} 
-                addEEGHandler={this.addEEGHandler}></Row>);
+                addEEGHandler={this.context.addEEGHandler}></Row>);
         }
         return(rows)
     }
@@ -81,11 +80,10 @@ export default class ChannelContainer extends Component {
             this.appendItem(channelName, toAppend)
         }
         //check to see if array is updated to be the display size
-        if (this.state.signals[keys[0]].length === this.state.intervalSize ) {
+        if (this.state.signals[keys[0]].length === this.context.intervalSize ) {
             // calculate psds
-            console.log("RATES check", this.state.intervalSize, this.state.sampleRate)
             let psdAsArr = calcPsdAllChan(this.state.signals, this.state.channels, 
-                this.state.intervalSize, this.state.sampleRate)
+                this.context.intervalSize, this.context.sampleRate)
             this.setState({charts : psdAsArr})
             // call helper to splice arrays so they don't contain last bits
             this.shiftWindow();
@@ -93,8 +91,8 @@ export default class ChannelContainer extends Component {
     }
 
     bindInterval() {
-        if (this.addEEGHandler) {
-            this.addEEGHandler("data", this.EEGHandler);
+        if (this.context.addEEGHandler) {
+            this.context.addEEGHandler("data", this.EEGHandler);
         }
     }
 
@@ -113,8 +111,7 @@ export default class ChannelContainer extends Component {
 }
 
 ChannelContainer.propTypes = {
-    addEEGHandler: PropTypes.func.isRequired,
-    sampleRate: PropTypes.number.isRequired,
-    intervalSize: PropTypes.number.isRequired,
     className: PropTypes.string
 }
+
+ChannelContainer.contextType = ContextInherit;
