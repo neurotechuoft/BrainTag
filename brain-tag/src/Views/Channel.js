@@ -13,8 +13,8 @@ export default function Channel(props){
             <div className="Charts">
                 <Channels 
                     className="chart"
-                    sampleRate='1000'
-                    intervalSize ='1000'
+                    sampleRate='256'
+                    intervalSize ='1024' //closest power of 2
                     addEEGHandler={props.addEEGHandler}/>
             </div>
             <Buttons

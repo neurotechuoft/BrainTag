@@ -4,6 +4,8 @@ import ChannelView from '../Views/Channel';
 import {VIEWS, TAGS} from './Constants';
 import Services from '../Services';
 import DataFormatter from './DataFormatter';
+import ContextProvider from '../Services/GlobalContext';
+
 
 /**
  * Presenter in MVP Architecture.
@@ -61,12 +63,13 @@ class Presenter extends Component {
     render() {
         if(this.state.page === VIEWS.CHANNELS){
             return (
-                <ChannelView
-                    addEEGHandler={Services.EEG.addHandler}
-                    tags={this.state.tags}
-                    isRecord={this.state.record}
-                    onRecordToggle={this.toggleRecord}
-                    onTagToggle={this.toggleTag} />
+                <ContextProvider addEEGHandler={Services.EEG.addHandler}>
+                    <ChannelView
+                        tags={this.state.tags}
+                        isRecord={this.state.record}
+                        onRecordToggle={this.toggleRecord}
+                        onTagToggle={this.toggleTag} />
+                </ContextProvider>
             );
         }
         return "";
