@@ -4,6 +4,20 @@ import ChannelView from '../Views/Channel';
 import {VIEWS, TAGS} from './Constants';
 import Services from '../Services';
 import DataFormatter, { getDataPointJSON } from './DataFormatter';
+import io from "socket.io-client"
+
+
+var disconnected =false;
+const connectionOptions =  {
+    "force new connection" : true,
+    //avoid having user reconnect manually in order to prevent dead clients after a server restart
+    "reconnectionAttempts": "Infinity", 
+    //before connect_error and connect_timeout are emitted.
+    "timeout" : 10000,                  
+    "transports" : ["websocket"]
+}
+const store_socket = io('http://localhost:8009', connectionOptions);
+const get_socket = io('http://localhost:8005', connectionOptions);
 
 /**
  * Presenter in MVP Architecture.
@@ -13,6 +27,8 @@ var data1 = {
         tags: undefined,
         timestamp: undefined
 }
+var record = false;
+var interval;
 class Presenter extends Component {
     constructor(props){
         super(props);
@@ -84,7 +100,6 @@ class Presenter extends Component {
     }
 
     componentDidMount(){
-        let record = false;
         let curTags = {};
         TAGS.forEach((value)=> (curTags[value]=false));
         this.setState({
@@ -94,20 +109,27 @@ class Presenter extends Component {
         Services.EEG.addHandler("data", this.initializeChannels);        
 
         this.toggleRecord = function (){
-            this.setState({
-                record: !this.state.record
-            }, () => {
-                if (!this.state.record){
-                    clearInterval(this.state.interval)
-                    Services.EEG.removeHandler("data", this.getData);
+            record = !record;
+            if (!record){
+                console.log("stopped");
+                get_socket.disconnect();
+                disconnected = true;
+                clearInterval(interval);
+            }
+            else{
+                if (disconnected){
+                    get_socket.open();
+                    disconnected = false;
                 }
-                else{
-                    this.state.interval = setInterval(() => {
-                        Services.EEG.addHandler("data", data => this.getData(data), Services.Storage.emitHandler("JSONData", this.sendData()));
-                    }, 1);
-                }
-            })
-            
+
+                interval = setInterval(() => {
+                    get_socket.on("data", data => {
+                        console.log("emmitting");
+                        this.getData(data);
+                        store_socket.emit("JSONData", this.sendData());
+                    });
+                }, 1);
+            }            
         }.bind(this);
 
         this.toggleTag = function (tag){
