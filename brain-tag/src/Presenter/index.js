@@ -44,11 +44,8 @@ class Presenter extends Component {
 
     initializeChannels(incomingData){
         let data = DataFormatter.formatIncomingEEG(incomingData);
-       // console.log(incomingData);
-    //    console.log(data);
         let curChannels = {};
         data['channels'].forEach((value)=> (curChannels[value]=0));
-      //  console.log(curChannels);
         this.setState({
             channels: curChannels,
         });
@@ -56,18 +53,10 @@ class Presenter extends Component {
     }
 
     sendData(){
-        // let data = {
-        //     timestamp: data.timestamp,
-        //     channels: data.channels,
-        //     tags: data.tags
-
-        // }
          return getDataPointJSON(data1, TAGS, this.state.tags_list);
     }
 
     getData(data){
-        // let data = DataFormatter.formatIncomingEEG(incomingData);
-        // data['channels'].forEach(value) =>(curChannels(value)=);
         const points = {
             "channel_1": data.channel_1,
             "channel_2": data.channel_2,
@@ -75,16 +64,11 @@ class Presenter extends Component {
             "channel_4": data.channel_4,
 
         };
-       // console.log(data);
-        
-    //    console.log(points)
-
         data1 = {
             channels: points,
             timestamp: data.time,
             tags: this.state.tags
         };
-      //  console.log(this.state)
     }
 
     componentDidMount(){
@@ -112,9 +96,9 @@ class Presenter extends Component {
 
                 interval = setInterval(() => {
                     get_socket.on("data", data => {
-                        console.log("emmitting");
+                        console.log("emitting");
                         this.getData(data);
-                        store_socket.emit("JSONData", this.sendData());
+                        Services.Storage.emitHandler("JSONData", this.sendData());
                     });
                 }, 1);
             }            
