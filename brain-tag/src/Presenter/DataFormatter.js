@@ -55,8 +55,6 @@ export function getDataPointJSON(data, allTags, assignedTags) {
     if (typeof data == 'string') {
         data = JSON.parse(data);
     }
-  //  console.log(data);
-
     let keys = Object.keys(data);
     let channels = keys.filter(notTime);
     return getDataPointJSONForChannels(data, allTags, assignedTags, channels);
@@ -118,9 +116,6 @@ export function getDataPointJSONForChannels(data, allTags, assignedTags, channel
         let tag = allTags[t];
         let index = assignedTags.indexOf(tag);
         structure.tags[tag] = (index > -1) ? 1 : 0;
-        // if (index > -1) {
-        //     assignedTags.splice(index, 1);
-        // }
     }
 
     return JSON.stringify(structure);
