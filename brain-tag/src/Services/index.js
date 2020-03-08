@@ -1,9 +1,7 @@
 // Services class to interface with external connections
 
-import {Socket,
-    addHandler,
-    removeHandler,
-    emitHandler} from "./Socket";
+import Socket from "./Socket";
+import {addHandler, removeHandler, emitHandler} from "./Socket/Handlers";
 
 let eeg_socket = (new Socket()).eeg_socket;
 let store_socket = (new Socket()).store_socket;
