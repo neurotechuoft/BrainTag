@@ -127,5 +127,7 @@ export function getDataPointJSONForChannels(data, allTags, assignedTags, channel
 }
 
 export default {
-    formatIncomingEEG: formatIncomingEEG
+    formatIncomingEEG: formatIncomingEEG,
+    getDataPointJSON: getDataPointJSON,
+    getDataPointJSONForChannels: getDataPointJSONForChannels
 }

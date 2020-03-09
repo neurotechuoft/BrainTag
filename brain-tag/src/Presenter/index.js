@@ -52,7 +52,7 @@ class Presenter extends Component {
         this.sendData = this.sendData.bind(this);
         this.getData = this.getData.bind(this);
     }
-    
+
     initializeChannels(incomingData){
         let data = DataFormatter.formatIncomingEEG(incomingData);
         let curChannels = {};
@@ -107,9 +107,9 @@ class Presenter extends Component {
 
                 interval = setInterval(() => {
                     get_socket.on("data", data => {
-                        console.log("emmitting");
+                        console.log("emitting");
                         this.getData(data);
-                        store_socket.emit("JSONData", this.sendData());
+                        Services.Storage.emitHandler("JSONData", this.sendData());
                     });
                 }, 1);
             }            
