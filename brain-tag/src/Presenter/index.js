@@ -83,6 +83,7 @@ class Presenter extends Component {
     componentDidMount(){
         this.initializeTags();
         Services.EEG.addHandler("data", this.initializeChannels);
+        this.recordDataHandler = this.recordDataHandler.bind(this);
         this.toggleRecord = this.toggleRecord.bind(this);
         this.toggleTag = this.toggleTag.bind(this);
     }
@@ -111,13 +112,15 @@ class Presenter extends Component {
             }
 
             interval = setInterval(() => {
-                get_socket.on("data", data => {
-                    console.log("emitting");
-                    this.getData(data);
-                    Services.Storage.emitHandler("JSONData", this.sendData());
-                });
+                get_socket.on("data", this.recordDataHandler);
             }, 1);
         }
+    }
+
+    recordDataHandler(data) {
+        console.log("emitting");
+        this.getData(data);
+        Services.Storage.emitHandler("JSONData", this.sendData());
     }
 
     toggleTag(tag) {
