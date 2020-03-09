@@ -5,15 +5,28 @@ import {VIEWS, TAGS} from './Constants';
 import Services from '../Services';
 import DataFormatter from './DataFormatter';
 import ContextProvider from '../Services/GlobalContext';
+import io from "socket.io-client"
 
+
+var disconnected =false;
+const connectionOptions =  {
+    "force new connection" : true,
+    //avoid having user reconnect manually in order to prevent dead clients after a server restart
+    "reconnectionAttempts": "Infinity",
+    //before connect_error and connect_timeout are emitted.
+    "timeout" : 10000,
+    "transports" : ["websocket"]
+}
+const store_socket = io('http://localhost:8009', connectionOptions);
+const get_socket = io('http://localhost:8005', connectionOptions);
 
 /**
  * Presenter in MVP Architecture.
  */
 var data1 = {
-        channels: undefined,
-        tags: undefined,
-        timestamp: undefined
+    channels: undefined,
+    tags: undefined,
+    timestamp: undefined
 }
 var record = false;
 var interval;
@@ -62,7 +75,7 @@ class Presenter extends Component {
         //     tags: data.tags
 
         // }
-         return getDataPointJSON(data1, TAGS, this.state.tags_list);
+         return DataFormatter.getDataPointJSON(data1, TAGS, this.state.tags_list);
     }
 
     getData(data){
