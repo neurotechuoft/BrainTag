@@ -83,57 +83,62 @@ class Presenter extends Component {
     }
 
     componentDidMount(){
+        this.initializeTags();
+        Services.EEG.addHandler("data", this.initializeChannels);
+        this.toggleRecord = this.toggleRecord.bind(this);
+        this.toggleTag = this.toggleTag.bind(this);
+    }
+
+    initializeTags() {
         let curTags = {};
         TAGS.forEach((value)=> (curTags[value]=false));
         this.setState({
             tags: curTags,
             record: record
         });
-        Services.EEG.addHandler("data", this.initializeChannels);        
-
-        this.toggleRecord = function (){
-            record = !record;
-            if (!record){
-                console.log("stopped");
-                get_socket.disconnect();
-                disconnected = true;
-                clearInterval(interval);
-            }
-            else{
-                if (disconnected){
-                    get_socket.open();
-                    disconnected = false;
-                }
-
-                interval = setInterval(() => {
-                    get_socket.on("data", data => {
-                        console.log("emitting");
-                        this.getData(data);
-                        Services.Storage.emitHandler("JSONData", this.sendData());
-                    });
-                }, 1);
-            }            
-        }.bind(this);
-
-        this.toggleTag = function (tag){
-            let curTags = this.state.tags;
-            curTags[tag] = !curTags[tag];
-            this.setState({
-                tags: curTags
-            }, () => {
-                let tagslist = []
-                TAGS.forEach(tag => {
-                    if (this.state.tags[tag]){
-                        tagslist.push(tag);
-                    }
-                })
-                this.setState({
-                    tags_list: tagslist
-                })
-            })
-        }.bind(this);
     }
-    
+
+    toggleRecord() {
+        record = !record;
+        if (!record){
+            console.log("stopped");
+            get_socket.disconnect();
+            disconnected = true;
+            clearInterval(interval);
+        }
+        else{
+            if (disconnected){
+                get_socket.open();
+                disconnected = false;
+            }
+
+            interval = setInterval(() => {
+                get_socket.on("data", data => {
+                    console.log("emitting");
+                    this.getData(data);
+                    Services.Storage.emitHandler("JSONData", this.sendData());
+                });
+            }, 1);
+        }
+    }
+
+    toggleTag(tag) {
+        let curTags = this.state.tags;
+        curTags[tag] = !curTags[tag];
+        this.setState({
+            tags: curTags
+        }, () => {
+            let tagslist = []
+            TAGS.forEach(tag => {
+                if (this.state.tags[tag]){
+                    tagslist.push(tag);
+                }
+            })
+            this.setState({
+                tags_list: tagslist
+            })
+        })
+    }
 
     render() {
         if(this.state.page === VIEWS.CHANNELS){
