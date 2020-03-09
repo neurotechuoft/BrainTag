@@ -13,7 +13,7 @@ export default class Row extends React.PureComponent {
                 <div className="channelTitle"> 
                     {this.props.channelName}
                 </div>
-                <div className="column"> 
+                <div className="column raw">
                     <RawData 
                         addEEGHandler={this.props.addEEGHandler}
                         secondsToShow={1} 
@@ -21,7 +21,7 @@ export default class Row extends React.PureComponent {
                         channel={this.props.channelName}
                     />
                 </div>
-                <div className="column"> 
+                <div className="column psd">
                     <PSD options={this.props.options} />
                 </div>
             </div>
@@ -33,4 +33,4 @@ Row.propTypes = {
     addEEGHandler: PropTypes.func.isRequired,
     options: PropTypes.object,
     channelName: PropTypes.string.isRequired
-}
+};
