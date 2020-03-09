@@ -5,19 +5,7 @@ import {VIEWS, TAGS} from './Constants';
 import Services from '../Services';
 import DataFormatter from './DataFormatter';
 import ContextProvider from '../Services/GlobalContext';
-import io from "socket.io-client"
 
-
-var disconnected =false;
-const connectionOptions =  {
-    "force new connection" : true,
-    //avoid having user reconnect manually in order to prevent dead clients after a server restart
-    "reconnectionAttempts": "Infinity",
-    //before connect_error and connect_timeout are emitted.
-    "timeout" : 10000,
-    "transports" : ["websocket"]
-}
-const get_socket = io('http://localhost:8005', connectionOptions);
 /**
  * Presenter in MVP Architecture.
  */
@@ -27,7 +15,6 @@ var data1 = {
     timestamp: undefined
 }
 var record = false;
-var interval;
 class Presenter extends Component {
     constructor(props){
         super(props);
@@ -98,22 +85,11 @@ class Presenter extends Component {
     }
 
     toggleRecord() {
-        record = !record;
-        if (!record){
-            console.log("stopped");
-            get_socket.disconnect();
-            disconnected = true;
-            clearInterval(interval);
-        }
-        else{
-            if (disconnected){
-                get_socket.open();
-                disconnected = false;
-            }
-
-            interval = setInterval(() => {
-                get_socket.on("data", this.recordDataHandler);
-            }, 1);
+        this.setState({record: !this.state.record});
+        if (this.state.record) {
+            Services.EEG.addHandler("data", this.recordDataHandler);
+        } else {
+            Services.EEG.removeHandler("data", this.recordDataHandler);
         }
     }
 
