@@ -5,17 +5,14 @@ import Line from 'react-chartjs-2';
 
 export default function PSD(props){
     const options = {
-        maintainAspectRatio: true,
-        responsive: false,
+        maintainAspectRatio: false,
+        responsive: true,
         scales: {
             yAxes: [{
                 display: true,
                 scaleLabel: {
                     display: true,
                     labelString: "Power"
-                },
-                ticks: {
-                    suggestedMax: 1000
                 }
             }],
             xAxes: [{
@@ -53,7 +50,7 @@ export default function PSD(props){
             lineTension: 0
         }]
     };
-    return (<Line data={data} options={options} />);
+    return (<Line data={data} options={options} height={70} />);
 }
 
 PSD.propTypes = {

@@ -1,9 +1,8 @@
 // Represents the Real Time EEG Plot
 
 import React, { Component } from 'react';
-import CanvasJSReact from '../../../Assets/canvasjs.react';
 import PropTypes from 'prop-types';
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+import Line from 'react-chartjs-2';
 
 var dps = []; // data points for graph
 
@@ -24,9 +23,9 @@ export default class DynamicLineChart extends Component {
         this.addEEGHandler('data', this.updateChart);
 
         // set interval for rendering
-        setInterval(() => {
+        /*setInterval(() => {
             this.chart.render();
-        }, 1000 / this.props.refreshRate);
+        }, 1000 / this.props.refreshRate);*/
     }
 
     /**
@@ -47,26 +46,51 @@ export default class DynamicLineChart extends Component {
 
     render() {
         const options = {
-            data: [{
-                type: "line",
-                dataPoints : dps
-            }],
-            axisY: {
-                title: "Magnitude"
+            maintainAspectRatio: false,
+            responsive: true,
+            animation: false,
+            scales: {
+                yAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: "Magnitude"
+                    }
+                }],
+                xAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: "Time"
+                    },
+                    ticks: {
+                        autoSkipPadding: 20
+                    }
+                }]
             },
-            axisX: {
-                title: "Time"
+            legend: {
+                display: false
             }
-        }
+        };
+        var data = {
+            labels : dps.map((x) => x.x.toFixed(2)),
+            datasets : [{
+                type: 'line',
+                bezierCurve: false,
+                backgroundColor: '#00f',
+                borderColor: '#00f',
+                borderWidth: 1,
+                fill: false,
+                data: dps.map((x) => x.y),
+                lineTension: 0
+            }]
+        };
 
         // You can get reference to the chart instance as shown below using onRef. 
         // This allows you to access all chart properties and methods
         return (
             <div>
-                <CanvasJSChart 
-                    options = {options} 
-                    onRef={ref => this.chart = ref}
-                />
+                <Line data={data} options={options} height={70}/>
             </div>
         );
     }
@@ -77,4 +101,4 @@ DynamicLineChart.propTypes = {
     secondsToShow: PropTypes.number.isRequired,
     channel: PropTypes.string.isRequired,
     refreshRate: PropTypes.number.isRequired
-}
+};
