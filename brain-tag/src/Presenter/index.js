@@ -19,23 +19,27 @@ class Presenter extends Component {
     constructor(props){
         super(props);
         this.state = {
+            // Represents: Current page being displayed
+            // Data: string
             page: VIEWS.CHANNELS,
-            // Object where keys are all Tag names, values are Bool: whether the tag is toggled "On" or not
-            tags: undefined,
-            // Bool: T/F whether the current data is being recorded
-            record: undefined,
-            // Object where keys are all Channel names, values are Bool: whether the channel is toggled "On" or not
+            // Represents: Channels (a.k.a. Electrodes) on headset
+            // Data: JSON object. keys - channel names. values - booleans (whether channel is toggle "On").
             channels: undefined,
-
-            interval: undefined,
-
+            // Represents: The current time associated with the data being collected
+            timestamp: undefined,
+            // Represents: Whether we are currently recording the data
+            // Data: boolean
+            record: false,
+            // Represents: The tags that can be associated with the collected data
+            // Data: list of tag names
             tags_list: [],
-            
-            timestamp: undefined
+            // Represents: The values of tags that can be associated with the collected data
+            // Data: JSON object. keys - tag names. values - booleans (whether tag is toggled "On").
+            tags: undefined
         }
         this.initializeChannels = this.initializeChannels.bind(this);
-        this.sendData = this.sendData.bind(this);
         this.getData = this.getData.bind(this);
+        this.sendData = this.sendData.bind(this);
     }
 
     initializeChannels(incomingData){
