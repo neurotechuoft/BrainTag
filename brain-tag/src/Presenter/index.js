@@ -17,9 +17,7 @@ const connectionOptions =  {
     "timeout" : 10000,
     "transports" : ["websocket"]
 }
-const store_socket = io('http://localhost:8009', connectionOptions);
 const get_socket = io('http://localhost:8005', connectionOptions);
-
 /**
  * Presenter in MVP Architecture.
  */
@@ -123,21 +121,9 @@ class Presenter extends Component {
     }
 
     toggleTag(tag) {
-        let curTags = this.state.tags;
-        curTags[tag] = !curTags[tag];
-        this.setState({
-            tags: curTags
-        }, () => {
-            let tagslist = []
-            TAGS.forEach(tag => {
-                if (this.state.tags[tag]){
-                    tagslist.push(tag);
-                }
-            })
-            this.setState({
-                tags_list: tagslist
-            })
-        })
+        let currTags = this.state.tags;
+        currTags[tag] = !currTags[tag];
+        this.setState({tags: currTags});
     }
 
     render() {
