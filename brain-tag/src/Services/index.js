@@ -21,8 +21,6 @@ function emitHandler(socket, eventName, handler){
     if(!socket.connected){
         console.log("Cannot add handler to socket that is closed: ", socket);
     }
-    // console.log(handler);
-
     socket.emit(eventName, handler);
 }
 
