@@ -89,11 +89,7 @@ export default class DynamicLineChart extends Component {
 
         // You can get reference to the chart instance as shown below using onRef. 
         // This allows you to access all chart properties and methods
-        return (
-            <div>
-                <Line data={data} options={options} height={60}/>
-            </div>
-        );
+        return (<Line data={data} options={options} height={60}/>);
     }
 }
 
