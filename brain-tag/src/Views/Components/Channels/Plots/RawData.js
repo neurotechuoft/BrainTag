@@ -80,6 +80,7 @@ export default class DynamicLineChart extends Component {
                 backgroundColor: '#00f',
                 borderColor: '#00f',
                 borderWidth: 1,
+                pointRadius: 0,
                 fill: false,
                 data: dps.map((x) => x.y),
                 lineTension: 0
@@ -88,11 +89,7 @@ export default class DynamicLineChart extends Component {
 
         // You can get reference to the chart instance as shown below using onRef. 
         // This allows you to access all chart properties and methods
-        return (
-            <div>
-                <Line data={data} options={options} height={70}/>
-            </div>
-        );
+        return (<Line data={data} options={options} height={60}/>);
     }
 }
 
