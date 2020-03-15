@@ -12,14 +12,14 @@ export default function PSD(props){
                 display: true,
                 scaleLabel: {
                     display: true,
-                    labelString: "Power"
+                    labelString: "Power (μV²/Hz)"
                 }
             }],
             xAxes: [{
                 display: true,
                 scaleLabel: {
                     display: true,
-                    labelString: "Frequency"
+                    labelString: "Frequency (Hz)"
                 }
             }]
         },
@@ -35,7 +35,7 @@ export default function PSD(props){
         datap = [1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0];
     } else {
         datap = props.options.data;
-        labels = props.options.labels;
+        labels = props.options.labels.map((x) => x.toFixed(2));
         console.log(props.options)
     }
     var data = {
