@@ -1,6 +1,6 @@
 # BrainTag
 
-BrainTag: A tool for neuroscience researchers
+A tool for neuroscience researchers.
 
 Features:
 
@@ -8,7 +8,7 @@ Features:
 - Visualize whether we are getting 'good' data
 - Store data for later, with different 'tags' related
 
-### Initial Setup
+## Initial Setup
 
 1. Clone the repo locally 
     > git clone https://github.com/neurotechuoft/BrainTag.git
@@ -22,8 +22,11 @@ Note: This folder (BrainTag/brain-tag) is for the core application.
 In a new terminal, get 'BrainTag' running:
 
 > cd brain-tag
+
 > npm install
+
 > npm run electron-dev
+
 
 ### 2) Run its file server
 
@@ -32,7 +35,9 @@ Note: This folder (BrainTag/FileServer) is for storing our 'recorded' data.
 In a new terminal, get the 'FileServer' running:
 
 > cd FileServer
+
 > npm install
+
 > npm run start
 
 ### 3) Setup the data stream
@@ -44,12 +49,14 @@ Note: This folder (BrainTag/DummyServer) is for streaming fake data to the appli
 In a new terminal, get the 'DummyServer' running:
 
 > cd DummyServer
+
 > npm install
+
 > npm run start
 
 #### Using A Headset: connect to your data stream
 
-TODO: add details
+TODO
 
 ## Development Process
 
