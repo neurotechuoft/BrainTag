@@ -3,16 +3,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Line from 'react-chartjs-2';
-// import io from 'socket.io-client'
-
-// const socket = io('http://localhost:8009', {
-//     "timeout" : 10000,                  //before connect_error and connect_timeout are emitted.
-//     "transports" : ["websocket"]
-// });
-
-// socket.on("connect", () => {
-//     console.log("fileserver connected!");
-// });
 
 var dps = []; // data points for graph
 
@@ -46,24 +36,6 @@ export default class DynamicLineChart extends Component {
         if (this.initialTime === 0) this.initialTime = new Date().getTime() / 1000;
 		
         dps.push({x: data["time"] - this.initialTime, y: parseFloat(data[this.props.channel])});
-        // var data2 = {
-        //     //add timestamp
-        //     timestamp: Date.now(),
-        //     channels:{
-        //     "channel_1": Math.floor(Math.random()*100),
-        //     "channel_2": Math.floor(Math.random()*100),
-        //     "channel_3": Math.floor(Math.random()*100),
-        //     "channel_4": Math.floor(Math.random()*100)
-        //     },
-        //     tags:{
-        //         "tag1": 1
-        //     }
-        // }
-        // socket.emit("JSONData", data2, err => {
-        //     if (err){
-        //         console.log(err);
-        //     }
-        // });
         // since we want to show last x seconds and streaming rate is 1000Hz,
         // the last x seconds have x * 1000 data points
         if (dps.length > this.dataToShow ) {

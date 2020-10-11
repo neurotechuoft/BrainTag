@@ -16,13 +16,29 @@ class Presenter extends Component {
         this.state = {
             page: VIEWS.CHANNELS,
             // Object where keys are all Tag names, values are Bool: whether the tag is toggled "On" or not
-            tags: undefined,
+            tags: {"Up": false, "Down": false, "Left": false, "Right": false},
             // Bool: T/F whether the current data is being recorded
-            record: undefined,
+            record: false,
             // Object where keys are all Channel names, values are Bool: whether the channel is toggled "On" or not
             channels: undefined
         }
         this.initializeChannels = this.initializeChannels.bind(this);
+
+        this.toggleRecord = function (){
+            this.setState({
+                record: !this.state.record
+            })
+        }.bind(this);
+
+        this.toggleTag = function (tag){
+            let curTags = this.state.tags;
+            curTags[tag] = !curTags[tag];
+            this.setState({
+                tags: curTags
+            })
+        }.bind(this);
+
+        this.handleStorage = this.handleStorage.bind(this)
     }
 
     initializeChannels(incomingData){
@@ -46,37 +62,36 @@ class Presenter extends Component {
             "channel_3": data.channel_3,
             "channel_4": data.channel_4
             },
-            tags:{
-                "tag1": 1
-            }
+            tags: this.state.tags,
+            record: this.state.record
         }
         Services.Storage.emitHandler(d)
 
     }
 
     componentDidMount(){
-        let record = false;
-        let curTags = {};
-        TAGS.forEach((value)=> (curTags[value]=false));
-        this.setState({
-            tags: curTags,
-            record: record
-        });
+        //let record = false;
+        //let curTags = {};
+        //TAGS.forEach((value)=> (curTags[value]=false));
+        // this.setState({
+        //     tags: curTags,
+        //     record: record
+        // });
         Services.EEG.addHandler("data", this.initializeChannels);
 
-        this.toggleRecord = function (){
-            this.setState({
-                record: !this.state.record
-            })
-        }.bind(this);
+        // this.toggleRecord = function (){
+        //     this.setState({
+        //         record: !this.state.record
+        //     })
+        // }.bind(this);
 
-        this.toggleTag = function (tag){
-            let curTags = this.state.tags;
-            curTags[tag] = !curTags[tag];
-            this.setState({
-                tags: curTags
-            })
-        }.bind(this);
+        // this.toggleTag = function (tag){
+        //     let curTags = this.state.tags;
+        //     curTags[tag] = !curTags[tag];
+        //     this.setState({
+        //         tags: curTags
+        //     })
+        // }.bind(this);
     }
 
     render() {
