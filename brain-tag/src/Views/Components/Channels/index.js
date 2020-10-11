@@ -52,7 +52,7 @@ export default class ChannelContainer extends Component {
             let sigCopy = this.state.signals[channelName]
             sigCopy.splice(0, (this.context.intervalSize*this.context.refreshRate))
             updated[channelName] = sigCopy
-            console.log("updated", updated[channelName], updated[channelName].length)
+            //console.log("updated", updated[channelName], updated[channelName].length)
 
         }
         this.setState({signals : updated})

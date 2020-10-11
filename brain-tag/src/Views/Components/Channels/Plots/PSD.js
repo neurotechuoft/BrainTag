@@ -36,7 +36,7 @@ export default function PSD(props){
     } else {
         datap = props.options.data;
         labels = props.options.labels;
-        console.log(props.options)
+        // console.log(props.options)
     }
     var data = {
         labels : labels,

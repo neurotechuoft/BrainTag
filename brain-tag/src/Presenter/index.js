@@ -35,6 +35,25 @@ class Presenter extends Component {
         Services.EEG.removeHandler("data", this.initializeChannels);
     }
 
+    handleStorage(data) {
+        // console.log("TEST TAGS", this.state.tags)
+        const d = {
+            //add timestamp
+            timestamp: data.time,
+            channels:{
+            "channel_1": data.channel_1,
+            "channel_2": data.channel_2,
+            "channel_3": data.channel_3,
+            "channel_4": data.channel_4
+            },
+            tags:{
+                "tag1": 1
+            }
+        }
+        Services.Storage.emitHandler(d)
+
+    }
+
     componentDidMount(){
         let record = false;
         let curTags = {};
@@ -68,7 +87,9 @@ class Presenter extends Component {
                         tags={this.state.tags}
                         isRecord={this.state.record}
                         onRecordToggle={this.toggleRecord}
-                        onTagToggle={this.toggleTag} />
+                        onTagToggle={this.toggleTag} 
+                        handleStorage={this.handleStorage}
+                        addEEGHandler={Services.EEG.addHandler} />
                 </ContextProvider>
             );
         }
