@@ -34,6 +34,17 @@ function removeHandler(socket, eventName, handler){
 
 }
 
+function emitHandler(socket, data) {
+    if(!socket.connected){
+        console.log("Cannot emit data to a socket that is closed: ", socket);
+    }
+    socket.emit("JSONData", data, err => {
+        if (err){
+            console.log(err);
+        }
+    });
+}
+
 /** Example Usage
  * import Services from '/src/Services';
  * 
@@ -47,6 +58,7 @@ export default {
     },
     Storage: {
         addHandler: (eventName, handler) => addHandler(store_socket, eventName, handler),
-        removeHandler: (eventName, handler) => removeHandler(store_socket, eventName, handler)
+        removeHandler: (eventName, handler) => removeHandler(store_socket, eventName, handler),
+        emitHandler: (data) => emitHandler(store_socket, data)
     }
 };

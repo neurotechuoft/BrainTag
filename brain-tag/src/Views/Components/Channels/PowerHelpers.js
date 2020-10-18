@@ -30,7 +30,7 @@ function calcPsdAllChan(chans, channelNames, fftSize, sampleRate) { // chans is 
     let charts = {};
     for (let i=0; i<channelNames.length; i++) {
         let chanSig = chans[channelNames[i]];
-        console.log("FFTSIZE", fftSize);
+        // console.log("FFTSIZE", fftSize);
         let psd = bci.psd(chanSig, {truncate : true});
         let parsedPsd = parsePowerPSD(psd, psd.length, sampleRate);
         charts[channelNames[i]] = makeChart(parsedPsd)

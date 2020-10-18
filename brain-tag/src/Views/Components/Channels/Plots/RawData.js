@@ -36,7 +36,6 @@ export default class DynamicLineChart extends Component {
         if (this.initialTime === 0) this.initialTime = new Date().getTime() / 1000;
 		
         dps.push({x: data["time"] - this.initialTime, y: parseFloat(data[this.props.channel])});
-
         // since we want to show last x seconds and streaming rate is 1000Hz,
         // the last x seconds have x * 1000 data points
         if (dps.length > this.dataToShow ) {

@@ -16,7 +16,9 @@ io.on('connection', (socket) => {
     
     // Adds the data to the array in obj
     socket.on('JSONData', data => {
-        obj.table.push(data);
+        if (data.record === true) {
+            obj.table.push(data);
+        }
     });
 
     // On disconnect, log which files have been created.

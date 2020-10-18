@@ -1,12 +1,21 @@
 // Represents the Real Time Channels View
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Buttons from './Components/Buttons/';
 import Channels from './Components/Channels/';
 import './Channel.css';
 import PropTypes from 'prop-types';
 
+
 export default function Channel(props){
+
+    useEffect(() => {
+        props.addEEGHandler('data', (data) => {
+            props.handleStorage(data)
+        })
+        return (() => console.log('unmounted'))
+    })
+
     return (
         <div className="App">
             <p className="header" > Chart View </p>
@@ -15,7 +24,7 @@ export default function Channel(props){
                     className="chart"
                     sampleRate='256'
                     intervalSize ='1024' //closest power of 2
-                    addEEGHandler={props.addEEGHandler}/>
+                    addEEGHandler={props.addEEGHandler} />
             </div>
             <Buttons
                 tags={props.tags}
