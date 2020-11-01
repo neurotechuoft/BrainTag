@@ -64,7 +64,7 @@ export default class ChannelContainer extends Component {
         for (let i=0; i<this.state.channels.length; i++) {
             let channelName = this.state.channels[i]
             rows.push(<Row channelName={channelName} options={this.state.charts[channelName]} 
-                addEEGHandler={this.context.addEEGHandler}></Row>);
+                addEEGHandler={this.context.addEEGHandler} key={i}></Row>);
         }
         return(rows)
     }

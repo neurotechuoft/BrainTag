@@ -38,7 +38,7 @@ export default function Channel(props){
 Channel.propTypes = {
     addEEGHandler: PropTypes.func.isRequired,
     tags: PropTypes.object.isRequired,
-    isRecord: PropTypes.func.isRequired,
+    isRecord: PropTypes.bool.isRequired,
     onRecordToggle: PropTypes.func.isRequired,
     onTagToggle: PropTypes.func.isRequired
 };
