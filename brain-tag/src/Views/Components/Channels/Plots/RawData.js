@@ -15,7 +15,7 @@ export default class DynamicLineChart extends Component {
         this.addEEGHandler = this.props.addEEGHandler.bind(this);
 		
         this.initialTime = 0; // time of when first datapoint is received
-        this.dataToShow = this.props.secondsToShow * 1000; // amount of data to show
+        this.dataToShow = this.props.secondsToShow * 300; // amount of data to show
     }
 
     componentDidMount() {
