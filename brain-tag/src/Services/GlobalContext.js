@@ -37,7 +37,7 @@ class GlobalContext extends Component {
 //props validation
 GlobalContext.propTypes = {
     children: PropTypes.element.isRequired,
-    addEEGHandler : PropTypes.element.isRequired,
+    addEEGHandler : PropTypes.func.isRequired,
 };
 
 export default GlobalContext;

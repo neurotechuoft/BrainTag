@@ -3,6 +3,10 @@ const io = require('socket.io')(8005); // Server is at http://localhost:8005
 let i = 0;
 const MULT = 50;
 
+function getIntervalMS(hertz) {
+    return 1000 / hertz
+}
+
 io.on('connection', (socket) => {
     // Precondition: func must be a function that returns a number
     function getRandNumStr(func){
@@ -24,7 +28,7 @@ io.on('connection', (socket) => {
             console.log(msg);
         });
         console.log("emitted: [", data.channel_1, data.channel_2, data.channel_3, data.channel_4, "]");
-    }, 1);
+    }, getIntervalMS(300));
     console.log("Connected");
 });
 

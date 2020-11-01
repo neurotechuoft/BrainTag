@@ -33,7 +33,7 @@ export default function Buttons(props){
 
 Buttons.propTypes = {
     tags: PropTypes.object.isRequired,
-    isRecord: PropTypes.func.isRequired,
+    isRecord: PropTypes.bool.isRequired,
     onRecordToggle: PropTypes.func.isRequired,
     onTagToggle: PropTypes.func.isRequired
 };
