@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@types/jasmine": "^3.4.6",
-    "electron": "^7.1.1",
+    "electron": "^18.3.7",
     "eslint-plugin-react": "^7.16.0"
   }
 }
